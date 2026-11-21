@@ -1,29 +1,31 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="home">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GeoSwiper — Guess where in the world you are</title>
-<meta name="description" content="A fast, fun geo-guessing game. Get dropped onto a real Street View panorama, read the clues, and tap your guess before the clock runs out. Race a rival, climb the ranks.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GeoSwiper: guess where on Earth you are</title>
+<meta name="description" content="GeoSwiper drops you onto a real street somewhere in the world. Look around, walk down the road, and pick one of two answers before the clock runs out. Coming soon to the App Store and Google Play.">
 <link rel="canonical" href="https://geoswiper.com/">
-<meta name="theme-color" content="#faf8f2" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#131210" media="(prefers-color-scheme: dark)">
+<!-- the top of this page is the night window in both themes -->
+<meta name="theme-color" content="#071224" data-fixed>
 <meta name="color-scheme" content="light dark">
-<script>try{var t=localStorage.getItem("gs-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<!-- "js" puts the headline on the night window while assets/try.js is on its way. If that script
+     has not started the stage after four seconds, the class comes off and the page shows as shipped. -->
+<script>(function(r){r.classList.add("js");try{var t=localStorage.getItem("gs-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t)}catch(e){}setTimeout(function(){var s=document.getElementById("stage");if(!s||s.getAttribute("data-state")==="static")r.classList.remove("js")},4000)})(document.documentElement)</script>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GeoSwiper">
 <meta property="og:url" content="https://geoswiper.com/">
-<meta property="og:title" content="GeoSwiper — Guess where in the world you are">
-<meta property="og:description" content="Dropped anywhere on Earth. Pan the real street, beat the clock, outrace your rival.">
+<meta property="og:title" content="GeoSwiper: guess where on Earth you are">
+<meta property="og:description" content="Dropped somewhere on Earth. Look around the real street and pick one of two answers.">
 <meta property="og:image" content="https://geoswiper.com/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="GeoSwiper: guess where on Earth you are. Two real screens from the game beside the headline.">
+<meta property="og:image:alt" content="GeoSwiper: guess where on Earth you are.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="GeoSwiper — Guess where in the world you are">
-<meta name="twitter:description" content="Dropped anywhere on Earth. Pan the real street, beat the clock, outrace your rival.">
+<meta name="twitter:title" content="GeoSwiper: guess where on Earth you are">
+<meta name="twitter:description" content="Dropped somewhere on Earth. Look around the real street and pick one of two answers.">
 <meta name="twitter:image" content="https://geoswiper.com/assets/og.png">
-<meta name="twitter:image:alt" content="GeoSwiper: guess where on Earth you are. Two real screens from the game beside the headline.">
+<meta name="twitter:image:alt" content="GeoSwiper: guess where on Earth you are.">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -34,6 +36,10 @@
      subset of just those letters. If the italic words change, update text= to match. -->
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@1,6..72,400&amp;text=whereonEarth%20&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
+<!-- maps-config.js sets the public, referrer-restricted Google Maps key. It ships empty: with no
+     key the page asks Google Maps for nothing and plays on the licensed photos (assets/try.js). -->
+<script src="/assets/maps-config.js" defer></script>
+<script src="/assets/try.js" defer></script>
 <script src="/assets/site.js" defer></script>
 </head>
 <body>
@@ -43,666 +49,120 @@
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
   <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
-  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
   <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
   <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
-  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></symbol>
-  <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
-  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
-  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
-  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
-  <symbol id="i-earth" viewBox="0 0 24 24"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"/><path d="M7 3.34V5a3 3 0 0 0 3 3 2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17"/><path d="M11 21.95V18a2 2 0 0 0-2-2 2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"/><circle cx="12" cy="12" r="10"/></symbol>
   <symbol id="i-pointer" viewBox="0 0 24 24"><path d="M22 14a8 8 0 0 1-8 8"/><path d="M18 11v-1a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1"/><path d="M10 9.5V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10"/><path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></symbol>
+  <symbol id="i-skip-forward" viewBox="0 0 24 24"><path d="M5 5.5v13a1 1 0 0 0 1.6.8l8.7-6.5a1 1 0 0 0 0-1.6L6.6 4.7A1 1 0 0 0 5 5.5Z"/><path d="M19 5v14"/></symbol>
+  <symbol id="i-timer" viewBox="0 0 24 24"><path d="M10 2h4"/><path d="m12 14 3-3"/><circle cx="12" cy="14" r="8"/></symbol>
+  <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
 </svg>
 
-<a class="skip" href="#main">Skip to content</a>
-
-<header class="site-header">
-  <div class="wrap bar">
-    <a class="brand" href="/" aria-label="GeoSwiper home"><picture><source srcset="/assets/icon-96.webp" type="image/webp"><img src="/icon-192.png" width="192" height="192" alt=""></picture> GeoSwiper</a>
-    <nav class="nav-links" aria-label="Primary">
-      <a href="#how">How it works</a>
-      <a href="#decks">Decks</a>
-      <a href="#features">Features</a>
-    </nav>
-    <button type="button" class="iconbtn theme-toggle" data-theme-toggle hidden aria-label="Switch to dark theme"><svg class="i"><use href="#i-moon"/></svg></button>
-    <a class="btn btn--ink btn--sm" href="#get">Coming soon</a>
-    <details class="nav-more">
-      <summary aria-label="Menu"><svg class="i"><use href="#i-menu"/></svg></summary>
-      <nav aria-label="Primary, compact">
-        <a href="#how">How it works</a>
-        <a href="#decks">Decks</a>
-        <a href="#features">Features</a>
-        <button type="button" class="nav-theme" data-theme-toggle hidden><svg class="i"><use href="#i-moon"/></svg><span data-theme-label>Dark theme</span></button>
-      </nav>
-    </details>
-  </div>
-</header>
+<a class="skip" href="#rules">Skip to content</a>
 
 <main id="main">
 
-<!-- ───────── Hero ───────── -->
-<section class="hero">
-  <!-- Source order is the reading order on a phone: headline, the round, the sentence,
-       the stores. On wide screens the grid lifts the round into the second column. -->
-  <div class="wrap hero-copy">
-    <p class="eyebrow"><i class="dot dot--lime"></i>30 seconds. Two answers. One rival.</p>
-    <h1>Guess <em>where on Earth</em> you are.</h1>
+<!-- ───────── The stage: a window onto the world, and a dock for the words ─────────
+     As shipped (and with no JavaScript) this is a real street photo and the headline.
+     With JavaScript, assets/try.js plays one try of GeoSwiper here. With a Google Maps key it is
+     Google's 3D map and live Street View (assets/flyin.js); with none it is the licensed photos
+     (assets/pano.js). Nothing of ours sits on the picture except the small chips of the top band. -->
+<section class="stage" id="stage" data-state="static" data-phase="title" data-layer="photo" aria-label="Play a round of GeoSwiper">
+  <a class="skip skip--stage" href="#answers">Skip to the two answers</a>
 
-    <figure class="stage">
-      <div class="stage-plate">
-        <div class="seg" data-seg hidden role="group" aria-label="Demo deck">
-          <span class="seg-label" aria-hidden="true">Deck</span>
-          <button type="button" class="is-on" data-go="0" aria-pressed="true">Cities</button>
-          <button type="button" data-go="1" aria-pressed="false">US States</button>
-          <button type="button" data-go="2" aria-pressed="false">Countries</button>
-        </div>
-
-        <svg class="stage-globe" viewBox="0 0 600 600" aria-hidden="true">
-          <defs>
-            <linearGradient id="sg-fill" x1=".15" y1=".05" x2=".85" y2=".95"><stop offset="0" stop-color="#34ecc6"/><stop offset=".55" stop-color="#6ce6a2"/><stop offset="1" stop-color="#a6ee73"/></linearGradient>
-            <radialGradient id="sg-rim" cx=".32" cy=".16" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".4"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></radialGradient>
-            <clipPath id="sg-clip"><circle cx="300" cy="300" r="298"/></clipPath>
-          </defs>
-          <circle cx="300" cy="300" r="298" fill="url(#sg-fill)"/>
-          <g clip-path="url(#sg-clip)">
-            <g fill="#2a9a63" fill-opacity=".4">
-              <path d="M70 168q58-46 134-20 54 30 12 78-66 46-138 14-54-40-8-72Z"/>
-              <path d="M398 92q70-22 112 30 32 54-34 80-74 22-106-30-24-58 28-80Z"/>
-              <path d="M236 262q64-10 84 44 10 54-52 64-66 8-76-44-8-54 44-64Z"/>
-              <path d="M452 300q52-14 76 26 18 44-30 60-56 14-76-28-12-44 30-58Z"/>
-            </g>
-            <g fill="none" stroke="#fff" stroke-opacity=".42" stroke-width="1.6">
-              <ellipse cx="300" cy="300" rx="112" ry="298"/><ellipse cx="300" cy="300" rx="222" ry="298"/>
-              <path d="M2 300h596"/><path d="M34 172q266-76 532 0"/><path d="M34 428q266 76 532 0"/><path d="M118 70q182-40 364 0"/>
-            </g>
-            <circle cx="300" cy="300" r="298" fill="url(#sg-rim)"/>
-          </g>
-        </svg>
-
-        <div class="phones">
-          <div class="phone phone--back phone--l" aria-hidden="true">
-            <picture class="phone-screen">
-              <source srcset="/assets/screens/g3.webp" type="image/webp">
-              <img src="/g3.png" width="506" height="1100" alt="">
-            </picture>
-          </div>
-          <div class="phone phone--back phone--r" aria-hidden="true">
-            <picture class="phone-screen">
-              <source srcset="/assets/screens/g4.webp" type="image/webp">
-              <img src="/g4.png" width="506" height="1100" alt="">
-            </picture>
-          </div>
-
-          <div class="phone phone--main">
-            <div class="phone-screen">
-              <div class="gs" data-demo data-pick="a" role="group" aria-label="A GeoSwiper round, illustrated: a street scene, a countdown timer and two answers to tap.">
-                <div class="gs-status" aria-hidden="true"><span class="gs-clock">09:41</span><i class="gs-island"></i>
-                  <svg class="gs-sys" viewBox="0 0 58 14"><g fill="#fff"><rect x="0" y="9" width="3" height="4" rx=".8"/><rect x="5" y="6.5" width="3" height="6.5" rx=".8"/><rect x="10" y="4" width="3" height="9" rx=".8"/><rect x="15" y="1.5" width="3" height="11.5" rx=".8"/></g><path d="M24.5 6.2a8 8 0 0 1 11 0M27 9a4.4 4.4 0 0 1 6 0" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round"/><circle cx="30" cy="12" r="1.3" fill="#fff"/><rect x="40.6" y="2.1" width="15" height="10" rx="3" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="1.2"/><rect x="42.3" y="3.8" width="11.6" height="6.6" rx="1.6" fill="#35d06f"/></svg>
-                </div>
-                <div class="gs-hud" aria-hidden="true">
-                  <div class="gs-who gs-who--you"><b>YOU</b><span>0</span></div>
-                  <div class="gs-who gs-who--rival"><b>RIVAL</b><span>0</span></div>
-                </div>
-                <div class="gs-track" aria-hidden="true"><i></i></div>
-
-                <div class="gs-card">
-                  <!-- Scene 1: a hillside city street with a tram -->
-                  <svg class="gs-scene is-on" viewBox="0 0 240 410" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustrated street: a steep city lane between tiled houses, with a yellow tram climbing towards you.">
-                    <defs>
-                      <linearGradient id="lx-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fc3ee"/><stop offset=".5" stop-color="#c4e6f4"/><stop offset=".62" stop-color="#fbe8cb"/></linearGradient>
-                      <pattern id="lx-tile" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#4f9bd0"/><circle cx="4" cy="4" r="1.5" fill="#d9eefb"/></pattern>
-                    </defs>
-                    <rect width="240" height="410" fill="url(#lx-sky)"/>
-                    <circle cx="150" cy="66" r="15" fill="#fff6d2"/>
-                    <path d="M0 208q40-18 84-6t86-6 70 8v30H0Z" fill="#9cc89d"/>
-                    <rect y="216" width="240" height="20" fill="#56abd4"/>
-                    <!-- far buildings -->
-                    <rect x="86" y="172" width="25" height="240" fill="#f6ead2"/><path d="M84 173h29l-3-8H84Z" fill="#c9573c"/>
-                    <g fill="#5a8296"><rect x="91" y="181" width="5" height="9"/><rect x="100" y="181" width="5" height="9"/><rect x="91" y="197" width="5" height="9"/><rect x="100" y="197" width="5" height="9"/><rect x="91" y="213" width="5" height="9"/><rect x="100" y="213" width="5" height="9"/></g>
-                    <rect x="129" y="164" width="26" height="248" fill="#ef9a9a"/><path d="M127 165h30v-8h-27Z" fill="#b84b35"/>
-                    <g fill="#fff3e0"><rect x="134" y="174" width="5" height="9"/><rect x="144" y="174" width="5" height="9"/><rect x="134" y="190" width="5" height="9"/><rect x="144" y="190" width="5" height="9"/><rect x="134" y="206" width="5" height="9"/><rect x="144" y="206" width="5" height="9"/></g>
-                    <!-- mid buildings -->
-                    <rect x="50" y="130" width="46" height="282" fill="#f08a63"/><path d="M48 131h50l-5-11H48Z" fill="#b84b35"/>
-                    <g fill="#fdebd0"><rect x="59" y="144" width="10" height="16"/><rect x="77" y="144" width="10" height="16"/><rect x="59" y="172" width="10" height="16"/><rect x="77" y="172" width="10" height="16"/><rect x="59" y="200" width="10" height="16"/><rect x="77" y="200" width="10" height="16"/><rect x="59" y="228" width="10" height="16"/><rect x="77" y="228" width="10" height="16"/></g>
-                    <rect x="144" y="118" width="46" height="294" fill="#f7e2ac"/><path d="M142 119h50v-11h-45Z" fill="#c9573c"/>
-                    <g fill="#5a8296"><rect x="152" y="132" width="10" height="16"/><rect x="170" y="132" width="10" height="16"/><rect x="152" y="160" width="10" height="16"/><rect x="170" y="160" width="10" height="16"/><rect x="152" y="188" width="10" height="16"/><rect x="170" y="188" width="10" height="16"/><rect x="152" y="216" width="10" height="16"/><rect x="170" y="216" width="10" height="16"/></g>
-                    <!-- street + rails -->
-                    <polygon points="56,410 184,410 131,234 109,234" fill="#dccfb8"/>
-                    <g stroke="#c9bba2" stroke-width="1.4" opacity=".8"><path d="M101 262h38M94 292h52M85 328h70M74 368h92"/></g>
-                    <path d="M99 410 116 234M141 410 124 234" stroke="#9a8d78" stroke-width="2.2" fill="none"/>
-                    <!-- near buildings -->
-                    <rect x="-4" y="70" width="66" height="344" fill="#f4bd45"/><path d="M-6 71h70l-7-14H-6Z" fill="#c9573c"/>
-                    <g fill="#2f5568" stroke="#fff3d6" stroke-width="2.4"><rect x="7" y="90" width="16" height="24"/><rect x="33" y="90" width="16" height="24"/><rect x="7" y="134" width="16" height="24"/><rect x="33" y="134" width="16" height="24"/><rect x="7" y="178" width="16" height="24"/><rect x="33" y="178" width="16" height="24"/><rect x="7" y="222" width="16" height="24"/><rect x="33" y="222" width="16" height="24"/><rect x="7" y="266" width="16" height="24"/><rect x="33" y="266" width="16" height="24"/></g>
-                    <g stroke="#3b3b3b" stroke-width="2" stroke-linecap="round"><path d="M4 160h22M30 160h22M4 248h22M30 248h22"/></g>
-                    <path d="M18 414v-64a12 12 0 0 1 24 0v64Z" fill="#7a3e2a"/>
-                    <rect x="178" y="56" width="66" height="358" fill="url(#lx-tile)"/><path d="M176 57h70V43h-63Z" fill="#c9573c"/>
-                    <g fill="#2f5568" stroke="#f7f1e1" stroke-width="2.6"><rect x="189" y="76" width="16" height="24"/><rect x="215" y="76" width="16" height="24"/><rect x="189" y="120" width="16" height="24"/><rect x="215" y="120" width="16" height="24"/><rect x="189" y="164" width="16" height="24"/><rect x="215" y="164" width="16" height="24"/><rect x="189" y="208" width="16" height="24"/><rect x="215" y="208" width="16" height="24"/><rect x="189" y="252" width="16" height="24"/><rect x="215" y="252" width="16" height="24"/></g>
-                    <path d="M196 414v-58a12 12 0 0 1 24 0v58Z" fill="#234a5e"/>
-                    <!-- wires -->
-                    <path d="M-4 148q124 44 248-12M-4 100q124 46 248-18" fill="none" stroke="#3f3f3f" stroke-width=".9" opacity=".65"/>
-                    <!-- tram -->
-                    <ellipse cx="120" cy="341" rx="27" ry="3.6" fill="#1d1d1d" opacity=".18"/>
-                    <path d="M120 266v-58" stroke="#3a3a3a" stroke-width="1.4"/>
-                    <rect x="96" y="262" width="48" height="9" rx="4.5" fill="#fbf5e4"/>
-                    <rect x="98" y="268" width="44" height="68" rx="7" fill="#f6c32c"/>
-                    <path d="M98 312h44v17a7 7 0 0 1-7 7h-30a7 7 0 0 1-7-7Z" fill="#e2a41a"/>
-                    <rect x="103" y="278" width="34" height="25" rx="3" fill="#27485c"/>
-                    <path d="M120 278v25" stroke="#f6c32c" stroke-width="2"/>
-                    <rect x="110" y="271.5" width="20" height="4" rx="2" fill="#27485c"/>
-                    <circle cx="120" cy="320" r="4.6" fill="#fffbe0"/>
-                    <rect x="102" y="334" width="36" height="5" rx="2.5" fill="#3a3a3a"/>
-                  </svg>
-
-                  <!-- Scene 2: a desert highway under mesas -->
-                  <svg class="gs-scene" viewBox="0 0 240 410" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true" aria-label="Illustrated street: an empty desert highway running towards red mesas.">
-                    <defs><linearGradient id="nm-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#35aee6"/><stop offset=".42" stop-color="#a5dcf0"/><stop offset=".6" stop-color="#fbe9c6"/></linearGradient></defs>
-                    <rect width="240" height="410" fill="url(#nm-sky)"/>
-                    <g fill="#fff"><rect x="22" y="122" width="62" height="15" rx="7.5"/><rect x="40" y="111" width="34" height="15" rx="7.5"/><rect x="150" y="152" width="52" height="13" rx="6.5"/><rect x="166" y="142" width="28" height="13" rx="6.5"/></g>
-                    <path d="M0 234 30 212l32 14 34-20 34 18 38-16 36 14 36-12v36H0Z" fill="#8fb0cf"/>
-                    <path d="M150 246l10-44 12-8h42l10 12 20 8v32Z" fill="#cc6e42"/>
-                    <path d="M157 218h87M153 232h91" stroke="#e6966a" stroke-width="2.6" opacity=".65"/>
-                    <path d="M-4 246v-68l18-8h52l12 14 14 62Z" fill="#b6532e"/>
-                    <path d="M66 170l12 14 14 62H74Z" fill="#8f3f22"/>
-                    <path d="M-4 198h76M-4 216h80" stroke="#d27a4c" stroke-width="3" opacity=".55"/>
-                    <rect y="244" width="240" height="170" fill="#e8c58b"/>
-                    <path d="M0 266q60-12 120 0t120-4v22H0Z" fill="#dcb26f" opacity=".7"/>
-                    <path d="M0 330q70-14 240 6v84H0Z" fill="#dcb26f" opacity=".45"/>
-                    <polygon points="82,410 158,410 124,244 116,244" fill="#4b4b52"/>
-                    <polygon points="82,410 86.500,410 116.700,244 116,244" fill="#f3efe2"/>
-                    <polygon points="153.500,410 158,410 124,244 123.300,244" fill="#f3efe2"/>
-                    <g fill="#f6c531"><polygon points="118.400,410 121.600,410 121.100,380 118.900,380"/><polygon points="119.100,362 120.900,362 120.700,340 119.300,340"/><polygon points="119.400,326 120.600,326 120.500,310 119.500,310"/><polygon points="119.600,299 120.400,299 120.300,287 119.700,287"/><polygon points="119.700,279 120.300,279 120.200,268 119.800,268"/></g>
-                    <g stroke="#5a3d2b" stroke-linecap="round" fill="none"><path d="M42 394v-94M33 312h18" stroke-width="3"/><path d="M78 324v-50M72.500 281h11" stroke-width="2"/><path d="M97 288v-29M94 262h6" stroke-width="1.4"/><path d="M42 312q22-6 36-31 9-12 19-19" stroke-width=".8"/></g>
-                    <path d="M186 376v-56" stroke="#6b6b6b" stroke-width="3" stroke-linecap="round"/>
-                    <rect x="170" y="290" width="32" height="32" rx="4" transform="rotate(45 186 306)" fill="#f6c531" stroke="#2a2a2a" stroke-width="2"/>
-                    <path d="M180 313q0-12 11-12M187.500 296.500l4.500 4.500-4.500 4.500" fill="none" stroke="#2a2a2a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-                    <g fill="#7d9150"><circle cx="22" cy="352" r="9"/><circle cx="33" cy="356" r="7"/><circle cx="208" cy="270" r="5"/><circle cx="62" cy="272" r="4"/><circle cx="216" cy="390" r="11"/><circle cx="229" cy="394" r="8"/><circle cx="142" cy="258" r="3"/></g>
-                  </svg>
-
-                  <!-- Scene 3: a shrine gate under a snow-capped mountain -->
-                  <svg class="gs-scene" viewBox="0 0 240 410" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true" aria-label="Illustrated street: a lane through a red shrine gate, cherry blossom either side, a snow-capped mountain behind.">
-                    <defs><linearGradient id="jp-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#74beec"/><stop offset=".4" stop-color="#cde6f4"/><stop offset=".62" stop-color="#ffdccb"/></linearGradient></defs>
-                    <rect width="240" height="410" fill="url(#jp-sky)"/>
-                    <circle cx="188" cy="148" r="15" fill="#f2553f"/>
-                    <path d="M14 256 98 124q22-12 44 0l84 132Z" fill="#6c83c7"/>
-                    <path d="M98 124q22-12 44 0l15 24-13-8-10 14-12-14-12 16-10-14-14 8Z" fill="#fff"/>
-                    <path d="M0 252q40-26 86-6t84-4 70-4v38H0Z" fill="#5fb07c"/>
-                    <path d="M0 268q60-18 120-4t120-6v32H0Z" fill="#3f8f5f"/>
-                    <rect y="284" width="240" height="126" fill="#86b97f"/>
-                    <!-- timber house, left -->
-                    <rect x="-4" y="250" width="72" height="166" fill="#7a5038"/>
-                    <path d="M4 336v80M16 336v80M28 336v80M40 336v80M52 336v80" stroke="#5f3c29" stroke-width="2"/>
-                    <path d="M-8 252q36-26 82 0l-5 10H-8Z" fill="#2f3a4c"/>
-                    <rect x="6" y="276" width="46" height="48" fill="#f8e8c0"/>
-                    <path d="M17.500 276v48M29 276v48M40.500 276v48M6 300h46" stroke="#7a5038" stroke-width="1.600"/>
-                    <path d="M60 262v12" stroke="#2c2c2c" stroke-width="1.200"/><ellipse cx="60" cy="285" rx="7" ry="10" fill="#e2472f"/><rect x="56" y="273" width="8" height="3" rx="1" fill="#2c2c2c"/><rect x="56" y="294" width="8" height="3" rx="1" fill="#2c2c2c"/>
-                    <!-- shop, right -->
-                    <rect x="172" y="238" width="72" height="178" fill="#f1e3c6"/>
-                    <rect x="172" y="334" width="72" height="82" fill="#7a5038"/>
-                    <path d="M184 334v82M196 334v82M208 334v82M220 334v82M232 334v82" stroke="#5f3c29" stroke-width="2"/>
-                    <path d="M164 240q42-28 84 0v10h-79Z" fill="#2f3a4c"/>
-                    <rect x="194" y="284" width="36" height="26" fill="#2b4a80"/><path d="M206 284v26M218 284v26" stroke="#f1e3c6" stroke-width="1.400"/><circle cx="212" cy="296" r="3.400" fill="#f1e3c6"/>
-                    <rect x="177" y="262" width="12" height="50" rx="1.500" fill="#2a2a2a"/><g fill="#f4ead6"><rect x="180" y="268" width="6" height="2.400"/><rect x="180" y="275" width="6" height="6" rx="1"/><rect x="180" y="286" width="6" height="2.400"/><rect x="180" y="293" width="6" height="6" rx="3"/><rect x="180" y="303" width="6" height="2.400"/></g>
-                    <!-- lane -->
-                    <polygon points="60,410 180,410 133,268 107,268" fill="#cbc6bb"/>
-                    <g stroke="#b3ada1" stroke-width="1.400"><path d="M100 290h40M93 314h54M84 344h72M74 378h92"/></g>
-                    <!-- gate -->
-                    <g fill="#e2472f"><rect x="85" y="218" width="10" height="120" rx="1"/><rect x="145" y="218" width="10" height="120" rx="1"/><rect x="78" y="236" width="84" height="8" rx="1"/><rect x="115" y="214" width="10" height="22"/></g>
-                    <path d="M66 206q54 10 108 0l4-10q-58 10-116 0Z" fill="#e2472f"/>
-                    <path d="M62 196q58 10 116 0l1-6q-59 10-118 0Z" fill="#2c2c2c"/>
-                    <rect x="82.500" y="332" width="15" height="8" rx="1" fill="#2c2c2c"/><rect x="142.500" y="332" width="15" height="8" rx="1" fill="#2c2c2c"/>
-                    <!-- blossom -->
-                    <path d="M30 340q5-44-4-76" stroke="#5a3c2e" stroke-width="4" fill="none" stroke-linecap="round"/>
-                    <g fill="#f59dbd"><circle cx="18" cy="248" r="19"/><circle cx="42" cy="240" r="16"/><circle cx="28" cy="222" r="15"/><circle cx="6" cy="226" r="12"/></g>
-                    <g fill="#fcc9da"><circle cx="24" cy="236" r="9"/><circle cx="44" cy="232" r="7"/><circle cx="10" cy="248" r="6"/></g>
-                    <path d="M234 352q-8-70 0-122" stroke="#5a3c2e" stroke-width="4" fill="none" stroke-linecap="round"/>
-                    <g fill="#f59dbd"><circle cx="228" cy="212" r="19"/><circle cx="208" cy="204" r="13"/><circle cx="240" cy="194" r="15"/><circle cx="224" cy="188" r="13"/></g>
-                    <g fill="#fcc9da"><circle cx="220" cy="202" r="8"/><circle cx="236" cy="212" r="6"/></g>
-                    <g fill="#f59dbd"><ellipse cx="104" cy="360" rx="3" ry="1.600"/><ellipse cx="138" cy="338" rx="2.600" ry="1.400"/><ellipse cx="126" cy="388" rx="3.200" ry="1.700"/><ellipse cx="92" cy="392" rx="2.800" ry="1.500"/><ellipse cx="150" cy="372" rx="3" ry="1.600"/></g>
-                  </svg>
-
-                  <div class="gs-top" aria-hidden="true">
-                    <div class="gs-col"><span class="gs-pill">Score 500</span><span class="gs-diff"><i></i>EASY</span></div>
-                    <div class="gs-col gs-col--r"><span class="gs-pill gs-time"><span data-time>30</span>s</span><span class="gs-pill gs-count">1/20</span></div>
-                  </div>
-                  <svg class="gs-walk" viewBox="0 0 60 34" aria-hidden="true"><path d="M30 3 46 13l-5 4-11-6-11 6-5-4Z" fill="#fff"/><path d="M30 17 44 26l-4.500 3.500L30 24l-9.500 5.500L16 26Z" fill="#fff" opacity=".8"/></svg>
-                  <span class="gs-hint" aria-hidden="true"><svg class="i"><use href="#i-pointer"/></svg>Drag to look around</span>
-                </div>
-
-                <div class="gs-answers">
-                  <button type="button" class="gs-ans" data-ans="a" disabled><i class="gs-code" data-code aria-hidden="true">PT</i><span data-label>Lisbon</span><svg class="i gs-ok" aria-hidden="true"><use href="#i-check"/></svg><svg class="i gs-no" aria-hidden="true"><use href="#i-x"/></svg></button>
-                  <button type="button" class="gs-ans" data-ans="b" disabled><i class="gs-code" data-code aria-hidden="true">PE</i><span data-label>Lima</span><svg class="i gs-ok" aria-hidden="true"><use href="#i-check"/></svg><svg class="i gs-no" aria-hidden="true"><use href="#i-x"/></svg></button>
-                </div>
-                <i class="gs-touch" aria-hidden="true"></i>
-
-                <picture class="gs-shot" data-shot="result">
-                  <source srcset="/assets/screens/g2.webp" type="image/webp">
-                  <img src="/g2.png" width="506" height="1100" alt="" decoding="async">
-                </picture>
-                <picture class="gs-shot" data-shot="intro">
-                  <source srcset="/assets/screens/g1.webp" type="image/webp">
-                  <img src="/g1.png" width="506" height="1100" alt="" decoding="async">
-                </picture>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <p class="vh" data-say aria-live="polite"></p>
-      <figcaption class="stage-cap">
-        <span><b data-try hidden>Try it: tap an answer.</b> Scene illustrated. In the game, every round is a real Street View panorama.</span>
-        <button type="button" class="iconbtn" data-pause hidden aria-label="Pause the demo"><svg class="i"><use href="#i-pause"/></svg></button>
-      </figcaption>
-    </figure>
-
-    <p class="lede">You're dropped onto a real street somewhere in the world. Pan around, hunt for clues, and tap your guess before the clock hits zero — while you race a rival to the finish.</p>
-
-    <div class="getcard" id="get">
-      <ul class="plaques" aria-label="Availability">
-        <li class="plaque"><i class="plaque-dot"></i><span><small>Coming soon</small><b>App Store</b></span></li>
-        <li class="plaque"><i class="plaque-dot"></i><span><small>Coming soon</small><b>Google Play</b></span></li>
-      </ul>
-      <ul class="ticks">
-        <li><svg class="i"><use href="#i-check"/></svg>Free to play</li>
-        <li><svg class="i"><use href="#i-check"/></svg>No account needed</li>
-        <li><svg class="i"><use href="#i-check"/></svg>Real Street View</li>
-      </ul>
+  <div class="band">
+    <div class="band-row">
+      <a class="chip chip--brand" href="/" aria-label="GeoSwiper home"><picture><source srcset="/assets/icon-96.webp" type="image/webp"><img src="/icon-192.png" width="192" height="192" alt=""></picture>GeoSwiper</a>
+      <span class="band-gap"></span>
+      <button type="button" class="chip" id="skip" hidden><svg class="i" aria-hidden="true"><use href="#i-skip-forward"/></svg><span>Skip the fall</span></button>
+      <button type="button" class="chip" id="clock" role="switch" aria-checked="true" aria-label="Clock" hidden><svg class="i" aria-hidden="true"><use href="#i-timer"/></svg><span id="clock-label" aria-hidden="true">Clock on</span></button>
+      <button type="button" class="chip chip--icon" data-theme-toggle hidden aria-label="Switch to dark theme"><svg class="i" aria-hidden="true"><use href="#i-moon"/></svg></button>
+      <a class="chip chip--cta" href="#get">Coming soon</a>
     </div>
-
-    <a class="textlink" href="#how">See how a round works <svg class="i"><use href="#i-arrow-down"/></svg></a>
+    <div class="band-row">
+      <p class="slate" id="slate"><span class="vh" id="slate-sr">Location hidden until you answer.</span><span class="slate-line" aria-hidden="true"><svg class="i"><use href="#i-pin"/></svg><span id="slate-text">██████, ██████ · 360° PHOTO</span></span><i class="hair" aria-hidden="true"><b id="hair"></b></i></p>
+      <p class="chip chip--coach" id="coach" hidden><svg class="i" aria-hidden="true"><use href="#i-pointer"/></svg><span></span></p>
+    </div>
   </div>
-</section>
 
-<!-- ───────── Numbers ───────── -->
-<section class="stats" aria-label="GeoSwiper in numbers">
-  <dl class="wrap stats-row">
-    <div><dt>Countries</dt><dd>142</dd></div>
-    <div><dt>Real cities</dt><dd>1,884</dd></div>
-    <div><dt>Game decks</dt><dd>5</dd></div>
-    <div><dt>Per round</dt><dd>30<small>s</small></dd></div>
-  </dl>
-</section>
-
-<!-- ───────── How a round works ───────── -->
-<section class="sec how" id="how" data-live>
-  <div class="wrap">
-    <div class="sec-head sec-head--split">
-      <div>
-        <p class="eyebrow"><i class="dot dot--coral"></i>How it works</p>
-        <h2>See it. Call it. Move on.</h2>
-      </div>
-      <p class="lede">No fiddly map pins — just two taps and a ticking clock.</p>
+  <div class="window" id="window">
+    <!-- the licensed photo: first paint, no JavaScript, and every time Google is not there -->
+    <div class="layer pano" id="photo">
+      <picture>
+        <source media="(max-aspect-ratio:1/1)" srcset="/assets/panos/rouen-still-480.webp 480w, /assets/panos/rouen-still.webp 780w" sizes="100vw" width="780" height="1690" type="image/webp">
+        <img class="pano-still" src="/assets/panos/rouen-wide.webp" width="1680" height="700" alt="Real 360° street photo: a cobbled old-town street lined with half-timbered houses." decoding="async" fetchpriority="high">
+      </picture>
     </div>
+    <!-- Google's own layers, created at most once per page view. The page styles only these two
+         host boxes, never anything Google draws inside them. -->
+    <div class="layer" id="pano" hidden></div>
+    <div class="layer" id="map3d" hidden></div>
+    <div id="shield" hidden></div>
+    <div id="curtain" hidden></div>
+  </div>
 
-    <ol class="steps">
-      <li class="step step--1" data-rv>
-        <div class="step-art">
-          <svg viewBox="0 0 320 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-            <defs><linearGradient id="a1-g" x1=".2" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#d6f8a8"/><stop offset="1" stop-color="#9fe870"/></linearGradient><clipPath id="a1-c"><circle cx="160" cy="292" r="170"/></clipPath></defs>
-            <rect width="320" height="220" fill="#2fd3b2"/>
-            <g fill="#fff" opacity=".9"><rect x="26" y="52" width="60" height="16" rx="8"/><rect x="44" y="40" width="34" height="16" rx="8"/><rect x="238" y="84" width="54" height="14" rx="7"/><rect x="254" y="73" width="28" height="14" rx="7"/></g>
-            <path d="M160 6v64" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 9" opacity=".8"/>
-            <circle cx="160" cy="292" r="170" fill="url(#a1-g)"/>
-            <g clip-path="url(#a1-c)">
-              <g fill="#4fb96a" fill-opacity=".55"><path d="M52 176q44-30 96-10 34 22 4 54-46 30-96 8-36-28-4-52Z"/><path d="M214 150q44-12 66 22 16 36-24 50-46 12-64-22-12-36 22-50Z"/></g>
-              <g fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.6"><ellipse cx="160" cy="292" rx="64" ry="170"/><ellipse cx="160" cy="292" rx="126" ry="170"/><path d="M8 216q152-44 304 0"/><path d="M48 162q112-28 224 0"/></g>
-            </g>
-            <ellipse class="a1-shadow" cx="160" cy="130" rx="17" ry="4.500" fill="#0b1b33" opacity=".25"/>
-            <g class="a1-pin"><path d="M160 130 139.500 93.500a24 24 0 1 1 41 0Z" fill="#fff"/><circle cx="160" cy="80" r="9.500" fill="#0b1b33"/></g>
-          </svg>
-        </div>
-        <div class="step-body">
-          <span class="step-no">01</span>
-          <h3>Get dropped</h3>
-          <p>A real Street View panorama, anywhere on the planet.</p>
-        </div>
-      </li>
+  <div class="dock" id="dock">
+    <div class="dock-say">
+      <h1 id="title">Guess <em>where on Earth</em> you are.</h1>
+      <p class="say" id="say" hidden></p>
+      <p class="sub" id="sub" hidden></p>
+      <p class="sub sub--hint" id="hint" hidden>Press 1 or 2</p>
+      <p class="sub sub--coach" id="coach2" hidden></p>
+    </div>
+    <div class="dock-act" id="answers" tabindex="-1">
+      <div class="nojs">
+        <p class="say">Rouen or Strasbourg?</p>
+        <details><summary>See the answer</summary><p>Rouen, France.</p></details>
+      </div>
+      <button type="button" class="btn btn--go" id="drop" hidden>Drop me in <svg class="i" aria-hidden="true"><use href="#i-arrow-down"/></svg></button>
+      <div class="plates" id="plates" role="group" aria-label="Where are you?" hidden>
+        <button type="button" class="plate" data-ans="1"><i class="cc" aria-hidden="true">FR</i><span class="plate-name">Rouen</span><svg class="i plate-ok" aria-hidden="true"><use href="#i-check"/></svg><svg class="i plate-no" aria-hidden="true"><use href="#i-x"/></svg></button>
+        <button type="button" class="plate" data-ans="2"><i class="cc" aria-hidden="true">FR</i><span class="plate-name">Strasbourg</span><svg class="i plate-ok" aria-hidden="true"><use href="#i-check"/></svg><svg class="i plate-no" aria-hidden="true"><use href="#i-x"/></svg></button>
+      </div>
+      <button type="button" class="btn btn--go" id="next" hidden>Next place <svg class="i" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
+      <div class="ends" id="ends" hidden>
+        <button type="button" class="btn btn--go" id="again"><svg class="i" aria-hidden="true"><use href="#i-rotate"/></svg><span>Try again</span></button>
+        <a class="btn btn--line" id="soon" href="#get">The app is coming soon</a>
+      </div>
+    </div>
+    <div class="dock-meta">
+      <p class="score" id="score"><span>Score <b id="sc">0</b></span><span class="best">Best <b id="bs">–</b></span><span class="pips" id="pips"><i></i><i></i><span class="vh" id="pips-sr">No misses.</span></span></p>
+      <a class="credit" id="credit" href="/credits/#photos"><span>Photo: DXR (Daniel Vorndran)</span> · <span>CC BY-SA 4.0</span></a>
+      <span class="credit credit--g" id="gterms" hidden>Google Maps <a href="https://maps.google.com/help/terms_maps/">terms</a> · <a href="https://policies.google.com/privacy">privacy</a></span>
+      <a class="ruleslink" href="#rules">The rules <svg class="i" aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+    </div>
+  </div>
+  <p class="vh" id="live" role="status" aria-live="polite"></p>
+</section>
 
-      <li class="step step--2" data-rv>
-        <div class="step-art">
-          <svg viewBox="0 0 320 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-            <defs>
-              <clipPath id="a2-c"><rect x="98" y="26" width="124" height="168" rx="18"/></clipPath>
-              <g id="a2-land">
-                <rect x="-80" y="26" width="480" height="168" fill="#bfe6ff"/>
-                <circle cx="252" cy="62" r="15" fill="#ffd95a"/>
-                <path d="M-80 132q60-44 120-12t110-18 110 14 140-22v100H-80Z" fill="#59c98a"/>
-                <path d="M-80 156q80-30 170-8t160-10 150 4v52H-80Z" fill="#2fa56f"/>
-                <path d="M150 194q-6-34 16-52t-8-36" fill="none" stroke="#f6edd6" stroke-width="13" stroke-linecap="round"/>
-                <g><rect x="40" y="112" width="26" height="20" fill="#fff"/><path d="M36 113l17-13 17 13Z" fill="#f4694f"/><rect x="222" y="118" width="22" height="18" fill="#fff"/><path d="M218 119l15-12 15 12Z" fill="#f4694f"/><rect x="300" y="106" width="24" height="20" fill="#fff"/><path d="M296 107l16-12 16 12Z" fill="#f4694f"/></g>
-                <g fill="#167a52"><circle cx="86" cy="126" r="11"/><circle cx="-8" cy="128" r="13"/><circle cx="192" cy="110" r="9"/><circle cx="270" cy="134" r="12"/><circle cx="352" cy="128" r="12"/></g>
-              </g>
-            </defs>
-            <rect width="320" height="220" fill="#4aa8f0"/>
-            <g opacity=".34"><g class="a2-pan"><use href="#a2-land"/></g></g>
-            <g clip-path="url(#a2-c)"><g class="a2-pan"><use href="#a2-land"/></g>
-              <path d="M160 150 174 159l-4.500 3.500-9.500-5.500-9.500 5.500-4.500-3.500Z" fill="#fff"/>
-            </g>
-            <rect x="98" y="26" width="124" height="168" rx="18" fill="none" stroke="#fff" stroke-width="5"/>
-            <g class="a2-hand"><circle cx="160" cy="174" r="12" fill="#0b1b33"/><path d="M153 174h14M156.500 170.500 153 174l3.500 3.500M163.500 170.500 167 174l-3.500 3.500" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
-            <g fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".9"><path d="M66 100 54 110l12 10"/><path d="M254 100l12 10-12 10"/></g>
-          </svg>
-        </div>
-        <div class="step-body">
-          <span class="step-no">02</span>
-          <h3>Look around</h3>
-          <p>Drag to pan 360°. Tap the arrows to walk down the street.</p>
-        </div>
-      </li>
+<p class="wrap cap" id="cap"><span id="cap-photo">Real 360° street photos — see <a href="/credits/#photos">credits</a>. </span><span id="cap-game">In the game, every round is a Google Street View panorama.</span><span id="cap-google" hidden>Map and Street View by Google, live. Use is subject to Google’s <a href="https://maps.google.com/help/terms_maps/">terms</a> and <a href="https://policies.google.com/privacy">privacy policy</a>.</span></p>
 
-      <li class="step step--3" data-rv>
-        <div class="step-art">
-          <svg viewBox="0 0 320 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-            <rect width="320" height="220" fill="#ffcb45"/>
-            <!-- road sign -->
-            <path d="M84 96v40" stroke="#0b1b33" stroke-width="7" stroke-linecap="round"/>
-            <rect x="26" y="26" width="116" height="72" rx="10" fill="#0b1b33"/>
-            <rect x="32" y="32" width="104" height="60" rx="6" fill="none" stroke="#fff" stroke-width="2"/>
-            <path d="M48 76V56h18M58 48l9 8-9 8" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-            <rect x="80" y="50" width="44" height="7" rx="3.500" fill="#fff"/><rect x="80" y="66" width="30" height="7" rx="3.500" fill="#fff" opacity=".7"/>
-            <!-- plate -->
-            <rect x="166" y="38" width="130" height="48" rx="8" fill="#fff" stroke="#0b1b33" stroke-width="4"/>
-            <path d="M168 46a6 6 0 0 1 6-6h12v44h-12a6 6 0 0 1-6-6Z" fill="#2f6fd0"/>
-            <g fill="#0b1b33"><rect x="196" y="52" width="11" height="20" rx="2"/><rect x="212" y="52" width="11" height="20" rx="5.500"/><rect x="228" y="60" width="8" height="4" rx="2"/><rect x="241" y="52" width="11" height="20" rx="2"/><rect x="257" y="52" width="11" height="20" rx="5.500"/><rect x="273" y="52" width="11" height="20" rx="2"/></g>
-            <!-- magnifier -->
-            <g class="a3-lens"><circle cx="246" cy="64" r="27" fill="#fff" fill-opacity=".28" stroke="#0b1b33" stroke-width="5"/><path d="M266 84l16 16" stroke="#0b1b33" stroke-width="7" stroke-linecap="round"/></g>
-            <!-- two answers -->
-            <rect x="26" y="150" width="128" height="46" rx="15" fill="#0b1b33"/>
-            <rect x="40" y="163" width="26" height="20" rx="5" fill="#4aa8f0"/><rect x="76" y="169" width="56" height="8" rx="4" fill="#fff"/>
-            <rect x="166" y="150" width="128" height="46" rx="15" fill="#0b1b33"/>
-            <rect x="180" y="163" width="26" height="20" rx="5" fill="#4aa8f0"/><rect x="216" y="169" width="46" height="8" rx="4" fill="#fff"/>
-            <g class="a3-pick"><rect x="166" y="150" width="128" height="46" rx="15" fill="#9fe870" stroke="#0b1b33" stroke-width="4"/><rect x="180" y="163" width="26" height="20" rx="5" fill="#0b1b33"/><rect x="216" y="169" width="38" height="8" rx="4" fill="#0b1b33"/><path d="M266 173l5 5 9-10" fill="none" stroke="#0b1b33" stroke-width="3.500" stroke-linecap="round" stroke-linejoin="round"/></g>
-            <circle class="a3-ring" cx="230" cy="173" r="30" fill="none" stroke="#fff" stroke-width="4"/>
-          </svg>
-        </div>
-        <div class="step-body">
-          <span class="step-no">03</span>
-          <h3>Read the clues</h3>
-          <p>Signs, plates, architecture — then tap one of two answers.</p>
-        </div>
-      </li>
-
-      <li class="step step--4" data-rv>
-        <div class="step-art">
-          <svg viewBox="0 0 320 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-            <rect width="320" height="220" fill="#f4694f"/>
-            <rect class="a4-hot" width="320" height="220" fill="#c92a1e"/>
-            <rect x="150" y="14" width="20" height="16" rx="4" fill="#0b1b33"/>
-            <circle cx="160" cy="116" r="80" fill="#0b1b33"/>
-            <circle cx="160" cy="116" r="62" fill="none" stroke="#fff" stroke-opacity=".16" stroke-width="12"/>
-            <!-- the final five seconds: one sixth of the dial -->
-            <circle cx="160" cy="116" r="62" fill="none" stroke="#f4694f" stroke-width="12" stroke-dasharray="64.930 324.630" transform="rotate(-150 160 116)"/>
-            <circle class="a4-arc" cx="160" cy="116" r="62" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="butt" pathLength="360" stroke-dasharray="300 360" transform="rotate(-90 160 116)"/>
-            <g class="a4-n30"><text x="160" y="131" text-anchor="middle" class="art-num">30</text></g>
-            <g class="a4-n5"><text x="160" y="131" text-anchor="middle" class="art-num" fill="#ff8b76">5</text></g>
-            <text x="160" y="152" text-anchor="middle" class="art-unit">SECONDS</text>
-          </svg>
-        </div>
-        <div class="step-body">
-          <span class="step-no">04</span>
-          <h3>Beat the clock</h3>
-          <p>30 seconds a round. The screen goes red-hot in the final 5.</p>
-        </div>
-      </li>
+<!-- ───────── The rules ───────── -->
+<section class="rules" id="rules" aria-labelledby="rules-h">
+  <div class="wrap">
+    <h2 class="label" id="rules-h">A try</h2>
+    <ol class="rules-list">
+      <li>You’re dropped on a real street, somewhere in the world.</li>
+      <li>Look around. Walk down the road. Find the clue.</li>
+      <li>Two answers. Pick one before the clock runs out.</li>
+      <li>A try ends on your second miss.</li>
+      <li>The clock gets shorter as you go.</li>
+      <li>Your best score is the one to beat.</li>
     </ol>
+    <p class="rules-foot">More than 1,800 cities. More than 130 countries. Play by continent, by country or by city.</p>
   </div>
 </section>
 
-<!-- ───────── Decks ───────── -->
-<section class="sec band decks-sec" id="decks">
-  <div class="wrap">
-    <div class="sec-head sec-head--center">
-      <p class="eyebrow"><i class="dot dot--violet"></i>5 game decks</p>
-      <h2>Pick your deck</h2>
-      <p class="lede">Countries, Cities, US States, Continents or Worldwide. Choose one and you're dropped.</p>
-    </div>
-
-    <ul class="decks">
-      <li class="deck deck--continents" data-rv>
-        <span class="deck-no">01</span>
-        <svg class="deck-art" viewBox="0 0 200 150" aria-hidden="true">
-          <g fill="none" stroke="#0b1b33" stroke-opacity=".22" stroke-width="1.4" stroke-dasharray="2 5" stroke-linecap="round"><path d="M0 42h200M0 76h200M0 110h200"/></g>
-          <g fill="#fff" fill-opacity=".82"><path d="M22 44q24-18 52-6 20 12 4 30-10 10-6 26-4 18-20 10-12-14-10-30-26-10-20-30Z"/><path d="M98 34q22-10 42 2 12 12-2 24-20 10-38 0-12-14-2-26Z"/><path d="M110 76q18-8 30 6 6 22-8 40-12 8-18-8-10-22-4-38Z"/></g>
-          <g fill="#0b1b33" fill-opacity=".2"><path d="M150 44q16-8 30 2 8 12-4 22-14 8-26-2-8-12 0-22Z"/><path d="M160 96q14-6 24 4 4 12-8 18-14 4-20-6-4-10 4-16Z"/></g>
-          <path d="M70 58 60.500 41a11 11 0 1 1 19 0Z" fill="#0b1b33"/><circle cx="70" cy="35.500" r="4" fill="#35d9b6"/>
-        </svg>
-        <h3>Continents</h3>
-        <p>Name the continent from a single street.</p>
-      </li>
-      <li class="deck deck--countries" data-rv>
-        <span class="deck-no">02</span>
-        <svg class="deck-art" viewBox="0 0 200 150" aria-hidden="true">
-          <path d="M52 22v116" stroke="#0b1b33" stroke-width="6" stroke-linecap="round"/>
-          <path d="M55 28q28-14 54 0t54 0v64q-28 14-54 0t-54 0Z" fill="#fff"/>
-          <path d="M55 49q28-14 54 0t54 0v22q-28 14-54 0t-54 0Z" fill="#0b1b33"/>
-          <circle cx="52" cy="20" r="6" fill="#0b1b33"/>
-          <g fill="#0b1b33" fill-opacity=".18"><rect x="150" y="108" width="34" height="22" rx="3"/><rect x="108" y="118" width="34" height="22" rx="3"/></g>
-        </svg>
-        <h3>Countries</h3>
-        <p>The classic mode — pick the right country.</p>
-      </li>
-      <li class="deck deck--cities" data-rv>
-        <span class="deck-no">03</span>
-        <svg class="deck-art" viewBox="0 0 200 150" aria-hidden="true">
-          <circle cx="158" cy="34" r="14" fill="#ffcb45"/>
-          <g fill="#fff" fill-opacity=".92"><rect x="16" y="78" width="30" height="72"/><rect x="50" y="42" width="34" height="108"/><rect x="88" y="66" width="26" height="84"/><rect x="118" y="28" width="30" height="122"/><rect x="152" y="86" width="34" height="64"/></g>
-          <path d="M67 42V26M133 28V12" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-          <g fill="#6455e2"><rect x="57" y="52" width="7" height="9"/><rect x="70" y="52" width="7" height="9"/><rect x="57" y="68" width="7" height="9"/><rect x="57" y="84" width="7" height="9"/><rect x="70" y="84" width="7" height="9"/><rect x="70" y="100" width="7" height="9"/><rect x="125" y="38" width="6" height="9"/><rect x="136" y="38" width="6" height="9"/><rect x="125" y="54" width="6" height="9"/><rect x="136" y="70" width="6" height="9"/><rect x="125" y="86" width="6" height="9"/><rect x="136" y="86" width="6" height="9"/><rect x="125" y="102" width="6" height="9"/><rect x="23" y="88" width="6" height="8"/><rect x="33" y="102" width="6" height="8"/><rect x="94" y="76" width="6" height="8"/><rect x="102" y="92" width="6" height="8"/><rect x="160" y="96" width="6" height="8"/><rect x="172" y="96" width="6" height="8"/><rect x="160" y="112" width="6" height="8"/></g>
-          <g fill="#ffcb45"><rect x="70" y="68" width="7" height="9"/><rect x="136" y="54" width="6" height="9"/><rect x="125" y="70" width="6" height="9"/><rect x="33" y="88" width="6" height="8"/><rect x="94" y="92" width="6" height="8"/><rect x="172" y="112" width="6" height="8"/></g>
-        </svg>
-        <h3>Cities</h3>
-        <p>Tell apart two look-alike cities.</p>
-      </li>
-      <li class="deck deck--states" data-rv>
-        <span class="deck-no">04</span>
-        <svg class="deck-art" viewBox="0 0 200 150" aria-hidden="true">
-          <g fill="#0b1b33" fill-opacity=".16"><rect x="0" y="30" width="200" height="14"/><rect x="0" y="62" width="200" height="14"/><rect x="0" y="94" width="200" height="14"/><rect x="0" y="126" width="200" height="14"/></g>
-          <polygon points="100,14 116.500,52.300 158,56.100 126.600,83.600 135.900,124.200 100,103 64.100,124.200 73.400,83.600 42,56.100 83.500,52.300" fill="#fff" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
-        </svg>
-        <h3>US States</h3>
-        <p>Guess the US state from the street.</p>
-      </li>
-      <li class="deck deck--world" data-rv>
-        <span class="deck-no">05</span>
-        <svg class="deck-art" viewBox="0 0 200 150" aria-hidden="true">
-          <defs><linearGradient id="dw-g" x1=".15" y1=".05" x2=".85" y2=".95"><stop offset="0" stop-color="#34ecc6"/><stop offset="1" stop-color="#a6ee73"/></linearGradient><clipPath id="dw-c"><circle cx="100" cy="92" r="52"/></clipPath></defs>
-          <g fill="#fff"><circle cx="26" cy="26" r="1.800"/><circle cx="170" cy="40" r="1.500"/><circle cx="182" cy="110" r="1.800"/><circle cx="20" cy="118" r="1.500"/><circle cx="52" cy="60" r="1.200"/></g>
-          <circle cx="100" cy="92" r="52" fill="url(#dw-g)"/>
-          <g clip-path="url(#dw-c)"><g fill="#2f9e62" fill-opacity=".5"><path d="M62 78q14-10 30-2 10 8 0 18-14 8-28 2-10-10-2-18Z"/><path d="M106 98q16-4 22 10 4 12-10 16-16 2-20-10-4-12 8-16Z"/></g><g fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="1.200"><ellipse cx="100" cy="92" rx="22" ry="52"/><path d="M48 92h104"/><path d="M54 70q46-14 92 0"/><path d="M54 114q46 14 92 0"/></g></g>
-          <path d="M100 66 82 37a21 21 0 1 1 36 0Z" fill="#fff"/><circle cx="100" cy="26" r="8.500" fill="url(#dw-g)"/>
-        </svg>
-        <h3>Worldwide</h3>
-        <p>A mix of continents, countries and cities.</p>
-      </li>
-    </ul>
-  </div>
-</section>
-
-<!-- ───────── Inside the game: real screens ───────── -->
-<section class="sec inside" id="inside">
-  <div class="wrap">
-    <div class="sec-head sec-head--split">
-      <div>
-        <p class="eyebrow"><i class="dot dot--sky"></i>Inside the game</p>
-        <h2>Decks, rivals, ranks and flags</h2>
-      </div>
-      <p class="lede">Real screens from the app, from the first drop to your profile.</p>
-    </div>
-
-    <div class="plates">
-      <figure class="plate plate--mint" data-rv>
-        <figcaption><span class="plate-no">01</span>Dropped anywhere on Earth</figcaption>
-        <div class="phone phone--plate">
-          <picture class="phone-screen">
-            <source srcset="/assets/screens/g1.webp" type="image/webp">
-            <img src="/g1.png" width="506" height="1100" alt="GeoSwiper intro screen reading “You’re dropped” over a view of Earth from orbit" loading="lazy" decoding="async">
-          </picture>
-        </div>
-      </figure>
-      <figure class="plate plate--lime" data-rv>
-        <figcaption><span class="plate-no">02</span>Pick your deck</figcaption>
-        <div class="phone phone--plate">
-          <picture class="phone-screen">
-            <source srcset="/assets/screens/g3.webp" type="image/webp">
-            <img src="/g3.png" width="506" height="1100" alt="GeoSwiper deck picker listing Continents, Countries, Cities, US States and Worldwide" loading="lazy" decoding="async">
-          </picture>
-        </div>
-      </figure>
-      <figure class="plate plate--sky" data-rv>
-        <figcaption><span class="plate-no">03</span>Choose your AI rival</figcaption>
-        <div class="phone phone--plate">
-          <picture class="phone-screen">
-            <source srcset="/assets/screens/g4.webp" type="image/webp">
-            <img src="/g4.png" width="506" height="1100" alt="GeoSwiper Play tab with a mode picker, three AI rival levels and a Start Race button" loading="lazy" decoding="async">
-          </picture>
-        </div>
-      </figure>
-      <figure class="plate plate--gold plate--wide" data-rv>
-        <figcaption><span class="plate-no">04</span>Run results with US state flags
-          <ul class="plate-list"><li>Accuracy</li><li>Best streak</li><li>States this run</li><li>Deck difficulty</li></ul>
-        </figcaption>
-        <div class="phone phone--plate">
-          <picture class="phone-screen">
-            <source srcset="/assets/screens/g2.webp" type="image/webp">
-            <img src="/g2.png" width="506" height="1100" alt="GeoSwiper results screen: run complete, you beat the rival, with accuracy, best streak and the state flags from the run" loading="lazy" decoding="async">
-          </picture>
-        </div>
-      </figure>
-      <figure class="plate plate--violet plate--wide" data-rv>
-        <figcaption><span class="plate-no">05</span>Your profile and ratings
-          <ul class="plate-list"><li>Runs, wins and losses</li><li>Best streak</li><li>Mode ratings</li><li>Recent runs</li></ul>
-        </figcaption>
-        <div class="phone phone--plate">
-          <picture class="phone-screen">
-            <source srcset="/assets/screens/g5.webp" type="image/webp">
-            <img src="/g5.png" width="506" height="1100" alt="GeoSwiper profile screen with rank progress, run stats and a rating for each deck" loading="lazy" decoding="async">
-          </picture>
-        </div>
-      </figure>
-    </div>
-  </div>
-</section>
-
-<!-- ───────── Features ───────── -->
-<section class="sec band features" id="features">
-  <div class="wrap feat-grid">
-    <div class="feat-head">
-      <p class="eyebrow"><i class="dot dot--gold"></i>Features</p>
-      <h2>Everything you need to keep guessing</h2>
-      <p class="lede">The details that turn a quick round into a long streak.</p>
-      <ul class="pills" aria-label="Game decks">
-        <li><i style="--c:var(--lime)"></i>Countries</li>
-        <li><i style="--c:var(--violet)"></i>Cities</li>
-        <li><i style="--c:var(--coral)"></i>US States</li>
-        <li><i style="--c:var(--mint)"></i>Continents</li>
-        <li><i style="--c:var(--world)"></i>Worldwide</li>
-      </ul>
-    </div>
-
-    <ul class="feats">
-      <li class="feat" data-rv>
-        <span class="feat-ico"><svg class="i"><use href="#i-pin"/></svg></span>
-        <div class="feat-text">
-          <h3>Real streets, real places</h3>
-          <p>Every round is a real Google Street View panorama.</p>
-        </div>
-        <div class="spec spec--map" aria-hidden="true">
-          <svg viewBox="0 0 640 84" preserveAspectRatio="xMidYMid slice">
-            <rect class="m-bg" width="640" height="84" fill="#f3efe5"/>
-            <path class="m-water" d="M-10 66q120-44 250-18t200-26 210-10" fill="none" stroke="#cfe6f1" stroke-width="18"/>
-            <g class="m-road" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"><path d="M-6 28h260l44 62"/><path d="M40-6v96"/><path d="M110-6v96"/><path d="M196-6v96"/><path d="M254 28l30-40"/><path d="M360-6l-24 96"/><path d="M336 46l70 6"/><path d="M398 90l70-64 178 14"/><path d="M468 26V-6"/><path d="M540-6v96"/></g>
-            <g class="m-park" fill="#dfe9cf"><rect x="124" y="38" width="58" height="26" rx="4"/><rect x="408" y="2" width="46" height="18" rx="4"/><rect x="556" y="50" width="60" height="28" rx="4"/></g>
-            <path class="m-pin" d="M320 48 309 28.500a12.600 12.600 0 1 1 22 0Z" fill="#0b1b33"/><circle class="m-pin-dot" cx="320" cy="22.500" r="4.800" fill="#9fe870"/>
-          </svg>
-        </div>
-      </li>
-      <li class="feat" data-rv>
-        <span class="feat-ico"><svg class="i"><use href="#i-zap"/></svg></span>
-        <div class="feat-text">
-          <h3>Race a rival</h3>
-          <p>Race an AI rival round by round, at the skill level you pick.</p>
-        </div>
-        <div class="spec spec--race" aria-hidden="true">
-          <div class="race"><b>YOU</b><span><i class="race-you"></i></span></div>
-          <div class="race"><b>RIVAL</b><span><i class="race-rival"></i></span></div>
-        </div>
-      </li>
-      <li class="feat" data-rv>
-        <span class="feat-ico"><svg class="i"><use href="#i-trophy"/></svg></span>
-        <div class="feat-text">
-          <h3>Real ranks</h3>
-          <p>Earn rating and climb from Bronze to Silver, Gold, Platinum and Diamond.</p>
-        </div>
-        <ol class="spec spec--ranks" aria-hidden="true">
-          <li style="--c:#c9793a">Bronze</li>
-          <li style="--c:#b3b8c2">Silver</li>
-          <li style="--c:#efbf2d">Gold</li>
-          <li style="--c:#7fd4cb">Platinum</li>
-          <li style="--c:#7aaeff">Diamond</li>
-        </ol>
-      </li>
-      <li class="feat" data-rv>
-        <span class="feat-ico"><svg class="i"><use href="#i-flame"/></svg></span>
-        <div class="feat-text">
-          <h3>Streaks that pay off</h3>
-          <p>Go from Cold Start to Hot to On Fire to Unstoppable.</p>
-        </div>
-        <ol class="spec spec--heat" aria-hidden="true">
-          <li style="--c:#b9d8ee">Cold Start</li>
-          <li style="--c:#ffcb45">Hot</li>
-          <li style="--c:#ff9a3d">On Fire</li>
-          <li style="--c:#f4694f">Unstoppable</li>
-        </ol>
-      </li>
-      <li class="feat" data-rv>
-        <span class="feat-ico"><svg class="i"><use href="#i-earth"/></svg></span>
-        <div class="feat-text">
-          <h3>Global leaderboard</h3>
-          <p>Earn your worldwide rank on a leaderboard shared with other players.</p>
-        </div>
-        <div class="spec spec--board" aria-hidden="true">
-          <div><b>1</b><i style="--w:92%"></i></div>
-          <div class="is-you"><b>2</b><i style="--w:78%"></i></div>
-          <div><b>3</b><i style="--w:61%"></i></div>
-        </div>
-      </li>
-    </ul>
-  </div>
-</section>
-
-<!-- ───────── Closing ───────── -->
-<section class="closing">
-  <svg class="closing-globe" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
-    <defs>
-      <linearGradient id="cg-fill" x1=".1" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#34ecc6"/><stop offset=".5" stop-color="#6ce6a2"/><stop offset="1" stop-color="#a6ee73"/></linearGradient>
-      <radialGradient id="cg-glow" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="1" gradientTransform="translate(600 420) scale(900 315)"><stop offset="0" stop-color="#2fe6c4" stop-opacity=".3"/><stop offset="1" stop-color="#2fe6c4" stop-opacity="0"/></radialGradient>
-      <clipPath id="cg-clip"><circle cx="600" cy="1010" r="900"/></clipPath>
-    </defs>
-    <rect x="-300" width="1800" height="420" fill="url(#cg-glow)"/>
-    <circle cx="600" cy="1010" r="900" fill="url(#cg-fill)"/>
-    <g clip-path="url(#cg-clip)">
-      <g fill="#2a9a63" fill-opacity=".38"><path d="M210 250q90-70 210-28 80 44 18 112-104 60-216 18-84-52-12-102Z"/><path d="M700 190q110-34 176 44 50 80-52 120-118 34-168-44-38-86 44-120Z"/><path d="M980 300q70-20 110 30 26 52-36 76-74 20-104-28-22-56 30-78Z"/></g>
-      <g fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="1.800"><ellipse cx="600" cy="1010" rx="300" ry="900"/><ellipse cx="600" cy="1010" rx="620" ry="900"/><path d="M600 110v320"/><path d="M-20 380q620-190 1240 0"/><path d="M90 250q510-120 1020 0"/></g>
-    </g>
-    <ellipse cx="600" cy="118" rx="26" ry="6" fill="#0b1b33" opacity=".22"/>
-    <path d="M600 116 572 68a32 32 0 1 1 56 0Z" fill="#fff"/><circle cx="600" cy="51" r="13" fill="url(#cg-fill)"/>
-  </svg>
-  <div class="closing-chips" aria-hidden="true">
-    <span class="qchip qchip--a"><i>PT</i>Lisbon</span>
-    <span class="qchip qchip--b"><i>PE</i>Lima</span>
-  </div>
-  <div class="wrap closing-inner">
-    <picture><source srcset="/assets/icon-168.webp" type="image/webp"><img class="closing-icon" src="/icon-192.png" width="192" height="192" alt="" loading="lazy" decoding="async"></picture>
-    <h2>Think you know the world?</h2>
-    <p class="lede">Prove it. Can you tell Lisbon from Lima at a glance?</p>
-    <ul class="plaques plaques--light" aria-label="Availability">
+<!-- ───────── The app ───────── -->
+<section class="get" id="get" aria-labelledby="get-h">
+  <div class="wrap get-inner">
+    <picture><source srcset="/assets/icon-168.webp" type="image/webp"><img class="get-icon" src="/icon-192.png" width="192" height="192" alt="" loading="lazy" decoding="async"></picture>
+    <h2 id="get-h">Think you know the world?</h2>
+    <p class="lede">GeoSwiper is coming soon to the App Store and Google Play.</p>
+    <ul class="plaques" aria-label="Availability">
       <li class="plaque"><i class="plaque-dot"></i><span><small>Coming soon</small><b>App Store</b></span></li>
       <li class="plaque"><i class="plaque-dot"></i><span><small>Coming soon</small><b>Google Play</b></span></li>
-    </ul>
-    <ul class="ticks ticks--light">
-      <li><svg class="i"><use href="#i-check"/></svg>Free to play</li>
-      <li><svg class="i"><use href="#i-check"/></svg>No account needed</li>
     </ul>
   </div>
 </section>
@@ -712,7 +172,7 @@
 <footer class="site-footer">
   <div class="wrap foot">
     <a class="brand" href="/" aria-label="GeoSwiper home"><picture><source srcset="/assets/icon-96.webp" type="image/webp"><img src="/icon-192.png" width="192" height="192" alt="" loading="lazy" decoding="async"></picture> GeoSwiper</a>
-    <nav class="foot-nav" aria-label="Footer"><a href="/privacy/">Privacy</a><a href="/support/">Support</a><a href="/credits/">Credits</a></nav>
+    <nav class="foot-nav" aria-label="Footer"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a><a href="/credits/">Credits</a></nav>
     <p class="foot-legal">© 2026 DATAMAN ANALYTICS LLC</p>
   </div>
 </footer>
