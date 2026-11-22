@@ -1,13 +1,19 @@
-/* GeoSwiper — the theme switch, shared by every page. Progressive enhancement only.
-   The theme follows the device until the visitor picks one. Picking the device's
-   own setting again hands control back to the device. */
+/* GeoSwiper — shared by every page. Progressive enhancement only.
+
+   The App Store link. While this is empty every App Store button and plaque reads "Coming soon"
+   and goes to the app section of the home page. Set it to the app's App Store address once the
+   app is live, and they all read "Download on the App Store" and go there. */
+var APP_STORE_URL = '';
+
+/* The theme switch. The theme follows the device until the visitor picks one. Picking the
+   device's own setting again hands control back to the device. */
 (function () {
   'use strict';
   var d = document, root = d.documentElement;
   var wantsDark = window.matchMedia('(prefers-color-scheme: dark)');
   var switches = d.querySelectorAll('[data-theme-toggle]');
-  /* the browser-bar tint follows the theme, except where a page fixes it (the home page's night window) */
-  var tints = d.querySelectorAll('meta[name="theme-color"]:not([data-fixed])');
+  /* the browser-bar tint follows the theme (every page's top is the paper header) */
+  var tints = d.querySelectorAll('meta[name="theme-color"]');
   function each(list, fn) { [].forEach.call(list, fn); }
   function theme() {
     return root.getAttribute('data-theme') || (wantsDark.matches ? 'dark' : 'light');
@@ -45,4 +51,19 @@
   });
   if (wantsDark.addEventListener) wantsDark.addEventListener('change', paint);
   paint();
+
+  /* the App Store buttons (see APP_STORE_URL above) */
+  var store = /^https:\/\/apps\.apple\.com\//.test(APP_STORE_URL) ? APP_STORE_URL : '';
+  if (store) each(d.querySelectorAll('[data-app-store]'), function (el) {
+    var a = el, line;
+    if (el.tagName !== 'A') { /* a plaque: its contents become one link */
+      a = d.createElement('a');
+      a.className = 'plaque-a';
+      while (el.firstChild) a.appendChild(el.firstChild);
+      el.appendChild(a);
+    }
+    a.href = store;
+    line = a.querySelector('[data-store-line]');
+    if (line) line.textContent = 'Download on the';
+  });
 })();

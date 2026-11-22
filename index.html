@@ -6,8 +6,8 @@
 <title>GeoSwiper: guess where on Earth you are</title>
 <meta name="description" content="GeoSwiper drops you onto a real street somewhere in the world. Look around, walk down the road, and pick one of two answers before the clock runs out. Coming soon to the App Store and Google Play.">
 <link rel="canonical" href="https://geoswiper.com/">
-<!-- the top of this page is the night window in both themes -->
-<meta name="theme-color" content="#071224" data-fixed>
+<meta name="theme-color" content="#faf8f2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131210" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
 <!-- "js" puts the headline on the night window while assets/try.js is on its way. If that script
      has not started the stage after four seconds, the class comes off and the page shows as shipped. -->
@@ -67,23 +67,30 @@
      As shipped (and with no JavaScript) this is a real street photo and the headline.
      With JavaScript, assets/try.js plays one try of GeoSwiper here. With a Google Maps key it is
      Google's 3D map and live Street View (assets/flyin.js); with none it is the licensed photos
-     (assets/pano.js). Nothing of ours sits on the picture except the small chips of the top band. -->
+     (assets/pano.js). Three rows: the header, the window, the dock. Nothing of ours sits on the
+     picture except the game's small chips along the window's top edge. -->
 <section class="stage" id="stage" data-state="static" data-phase="title" data-layer="photo" aria-label="Play a round of GeoSwiper">
   <a class="skip skip--stage" href="#answers">Skip to the two answers</a>
 
+  <!-- The header: its own row above the window, on paper like the dock, so the picture is framed top
+       and bottom. The App Store button reads "Coming soon" until APP_STORE_URL is set in assets/site.js. -->
+  <header class="site-header">
+    <div class="bar">
+      <a class="brand" href="/" aria-label="GeoSwiper home"><picture><source srcset="/assets/icon-96.webp" type="image/webp"><img src="/icon-192.png" width="192" height="192" alt=""></picture><span>GeoSwiper</span></a>
+      <nav class="nav-links" aria-label="Primary"><a href="#rules">The rules</a></nav>
+      <button type="button" class="iconbtn theme-toggle" data-theme-toggle hidden aria-label="Switch to dark theme"><svg class="i" aria-hidden="true"><use href="#i-moon"/></svg></button>
+      <a class="store" href="#get" data-app-store><svg class="mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span class="store-t"><small data-store-line>Coming soon</small> <b>App Store</b></span></a>
+    </div>
+  </header>
+
+  <!-- Ours over the window: only the game's own small chips along its top edge -->
   <div class="band">
-    <div class="band-row">
-      <a class="chip chip--brand" href="/" aria-label="GeoSwiper home"><picture><source srcset="/assets/icon-96.webp" type="image/webp"><img src="/icon-192.png" width="192" height="192" alt=""></picture>GeoSwiper</a>
-      <span class="band-gap"></span>
+    <p class="slate" id="slate"><span class="vh" id="slate-sr">Location hidden until you answer.</span><span class="slate-line" aria-hidden="true"><svg class="i"><use href="#i-pin"/></svg><span id="slate-text">██████, ██████ · 360° PHOTO</span></span><i class="hair" aria-hidden="true"><b id="hair"></b></i></p>
+    <p class="chip chip--coach" id="coach" hidden><svg class="i" aria-hidden="true"><use href="#i-pointer"/></svg><span></span></p>
+    <span class="band-end">
       <button type="button" class="chip" id="skip" hidden><svg class="i" aria-hidden="true"><use href="#i-skip-forward"/></svg><span>Skip the fall</span></button>
       <button type="button" class="chip" id="clock" role="switch" aria-checked="true" aria-label="Clock" hidden><svg class="i" aria-hidden="true"><use href="#i-timer"/></svg><span id="clock-label" aria-hidden="true">Clock on</span></button>
-      <button type="button" class="chip chip--icon" data-theme-toggle hidden aria-label="Switch to dark theme"><svg class="i" aria-hidden="true"><use href="#i-moon"/></svg></button>
-      <a class="chip chip--cta" href="#get">Coming soon</a>
-    </div>
-    <div class="band-row">
-      <p class="slate" id="slate"><span class="vh" id="slate-sr">Location hidden until you answer.</span><span class="slate-line" aria-hidden="true"><svg class="i"><use href="#i-pin"/></svg><span id="slate-text">██████, ██████ · 360° PHOTO</span></span><i class="hair" aria-hidden="true"><b id="hair"></b></i></p>
-      <p class="chip chip--coach" id="coach" hidden><svg class="i" aria-hidden="true"><use href="#i-pointer"/></svg><span></span></p>
-    </div>
+    </span>
   </div>
 
   <div class="window" id="window">
@@ -161,8 +168,8 @@
     <h2 id="get-h">Think you know the world?</h2>
     <p class="lede">GeoSwiper is coming soon to the App Store and Google Play.</p>
     <ul class="plaques" aria-label="Availability">
-      <li class="plaque"><i class="plaque-dot"></i><span><small>Coming soon</small><b>App Store</b></span></li>
-      <li class="plaque"><i class="plaque-dot"></i><span><small>Coming soon</small><b>Google Play</b></span></li>
+      <li class="plaque" data-app-store><svg class="mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small data-store-line>Coming soon</small> <b>App Store</b></span></li>
+      <li class="plaque"><svg class="mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg><span><small>Coming soon</small> <b>Google Play</b></span></li>
     </ul>
   </div>
 </section>

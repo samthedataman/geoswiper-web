@@ -145,42 +145,67 @@ h1 em{font-style:italic;color:var(--pine)}
 .iconbtn .i{width:17px;height:17px}
 [hidden]{display:none !important}
 
-/* ───────── Header (privacy, support, credits) ───────── */
-.site-header{position:sticky;top:0;z-index:50;background:rgba(var(--paper-rgb),.88);-webkit-backdrop-filter:saturate(1.4) blur(12px);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line)}
-.bar{display:flex;align-items:center;gap:var(--s3);height:64px}
-.brand{flex:none;display:inline-flex;align-items:center;gap:10px;font:700 1.1875rem/1 var(--sans);letter-spacing:-.02em;text-decoration:none;color:inherit}
+/* ───────── Header (every page) ─────────
+   One bar: the app icon and the wordmark on the left; the links, the theme switch and the App Store
+   button on the right. On the home page it is the stage's first row (see the stage). The App Store
+   button reads "Coming soon" until APP_STORE_URL is set in assets/site.js. */
+.site-header{--hdr:64px;position:sticky;top:0;z-index:50;background:rgba(var(--paper-rgb),.92);-webkit-backdrop-filter:saturate(1.4) blur(12px);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:10px;height:var(--hdr)}
+.brand{flex:none;display:inline-flex;align-items:center;gap:11px;font:750 1.375rem/1 var(--sans);letter-spacing:-.028em;text-decoration:none;color:inherit}
 .brand picture,.brand img{flex:none}
-.brand img{width:32px;height:32px;border-radius:22%;box-shadow:0 1px 2px rgba(11,27,51,.3)}
-.nav-links{display:flex;align-items:center;gap:4px;margin-left:var(--s5);margin-right:auto}
-.nav-links a{padding:8px 12px;border-radius:var(--r-xs);font-size:var(--fs-small);font-weight:500;color:var(--ink-2);text-decoration:none;transition:color .2s,background .2s}
+.brand img{width:36px;height:36px;border-radius:22%;box-shadow:0 0 0 1px rgba(11,27,51,.08),0 1px 3px rgba(11,27,51,.28)}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:auto;margin-right:6px}
+.nav-links a{display:inline-flex;align-items:center;height:44px;padding:0 14px;border-radius:var(--r-sm);font:600 .9375rem/1 var(--sans);color:var(--ink-2);text-decoration:none;transition:color .2s,background .2s}
 .nav-links a:hover{color:var(--ink);background:rgba(var(--ink-rgb),.06)}
+.site-header .iconbtn{width:44px;height:44px;border-color:transparent;background:transparent}
+.site-header .iconbtn:hover{box-shadow:none;background:rgba(var(--ink-rgb),.06)}
+.site-header .iconbtn .i{width:19px;height:19px}
+/* the App Store button: the Apple mark (the only brand glyphs on the site are this and Google Play's) */
+.mark{flex:none;fill:currentColor}
+.store{flex:none;display:inline-flex;align-items:center;gap:9px;height:44px;padding:0 16px 0 13px;border-radius:var(--r-sm);background:var(--ink);color:var(--paper);text-decoration:none;transition:box-shadow .2s}
+.store:hover{box-shadow:0 0 0 2px var(--ink)}
+.store .mark{width:21px;height:21px;margin-top:-3px}
+.store-t{display:flex;flex-direction:column;gap:3px;white-space:nowrap}
+.store small{font:600 .6875rem/1 var(--sans);letter-spacing:.01em;opacity:.82}
+.store b{font:650 1.0625rem/1 var(--sans);letter-spacing:-.015em}
+@media (max-width:899px){
+  .site-header{--hdr:56px}
+}
 @media (max-width:520px){
   .nav-links{display:none}
   .bar .theme-toggle{margin-left:auto}
+  .brand{gap:10px;font-size:1.25rem}
+  .brand img{width:32px;height:32px}
+  .store{gap:7px;padding:0 12px 0 10px}
+  .store .mark{width:18px;height:18px}
+  .store small{font-size:.5938rem}
+  .store b{font-size:.9375rem}
 }
 
 /* ───────── The stage ─────────
-   The first screen of the home page. Two rows: the window (the world) and the dock (the words).
-   Ours over the window: only the small opaque chips of the top band. Google draws its logo and
-   its copyright row along the bottom edge of the window; the dock sits below the window, so
-   nothing of ours can ever cover them. No rule here reaches inside what Google draws. */
-.stage{--band:96px;--dock:120px;position:relative;display:grid;grid-template-rows:minmax(0,1fr) auto;height:100vh;height:100svh;min-height:560px;min-height:max(340px,min(560px,100svh));background:var(--night)}
+   The first screen of the home page. Three rows: the header, the window (the world) and the dock
+   (the words); the header and the dock are paper, so the picture is framed top and bottom.
+   Ours over the window: only the game's small opaque chips along its top edge. Google draws its
+   logo and its copyright row along the bottom edge of the window; the dock sits below the window,
+   so nothing of ours can ever cover them. No rule here reaches inside what Google draws. */
+.stage{--dock:120px;--top:calc(var(--hdr) + env(safe-area-inset-top));--hdr:64px;position:relative;display:grid;grid-template-rows:auto minmax(0,1fr) auto;height:100vh;height:100svh;min-height:560px;min-height:max(340px,min(560px,100svh));background:var(--night)}
 .skip--stage{left:50%;translate:-50% 0;background:var(--on-navy);color:#191813}
 .skip--stage:focus{top:12px}
 
-/* the top band */
-.band{position:absolute;inset:0 0 auto;z-index:6;display:grid;grid-template-rows:40px 32px;row-gap:8px;align-content:start;height:var(--band);padding:max(12px,env(safe-area-inset-top)) max(var(--gutter),env(safe-area-inset-right)) 0 max(var(--gutter),env(safe-area-inset-left));pointer-events:none}
-.band-row{display:flex;align-items:center;gap:8px;min-width:0}
-.band-gap{flex:1}
+/* the header, as the stage's first row: opaque paper, never over the picture */
+.stage > .site-header{--hdr:inherit;position:relative;top:auto;z-index:7;grid-column:1/-1;background:var(--paper);-webkit-backdrop-filter:none;backdrop-filter:none}
+.stage > .site-header .bar{height:var(--top);padding:env(safe-area-inset-top) max(var(--gutter),env(safe-area-inset-right)) 0 max(var(--gutter),env(safe-area-inset-left))}
+
+/* the chips along the window's top edge: the slate and the coach line left, "Skip the fall" and the
+   clock switch right. When the slate and the chips do not fit on one line (the narrowest phones, or
+   "Skip the fall" and the clock together), the chips wrap to a second line, still on the right,
+   rather than cut the slate short. */
+.band{position:absolute;top:var(--top);left:0;right:0;z-index:6;display:flex;flex-wrap:wrap;align-items:center;align-content:flex-start;gap:6px 8px;padding:12px max(var(--gutter),env(safe-area-inset-right)) 0 max(var(--gutter),env(safe-area-inset-left));pointer-events:none}
+.band-end{flex:0 1 auto;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px 8px;margin-left:auto}
 .chip{position:relative;flex:none;display:inline-flex;align-items:center;gap:8px;height:36px;margin:0;padding:0 13px;border:0;border-radius:var(--r-sm);background:var(--night);color:var(--on-navy);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);font:600 .875rem/1 var(--sans);text-decoration:none;white-space:nowrap;cursor:pointer;pointer-events:auto;transition:box-shadow .2s}
 .chip::after{content:"";position:absolute;inset:-4px}          /* a 44px target round a 36px chip */
 a.chip:hover,button.chip:hover{box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
 .chip .i{width:16px;height:16px}
-.chip--icon{width:36px;padding:0;justify-content:center}
-.chip--brand{gap:9px;padding:0 13px 0 6px;font:700 1.0625rem/1 var(--sans);letter-spacing:-.02em}
-.chip--brand img{width:24px;height:24px;border-radius:22%}
-.chip--cta{background:var(--on-navy);color:#191813;box-shadow:none}
-a.chip--cta:hover{box-shadow:0 0 0 2px var(--on-navy)}
 .chip--coach{height:32px;font-weight:500;font-size:.8125rem;cursor:default;color:var(--on-navy-2);animation:chip-in .32s var(--ease-out) both}
 .chip--coach .i{color:var(--lime)}
 @keyframes chip-in{from{opacity:0;translate:0 -6px}}
@@ -332,11 +357,13 @@ html.js .stage[data-title="off"] .dock h1{opacity:0}
 .get h2{margin-top:var(--s6);color:#fff}
 .get .lede{margin-top:var(--s4);color:var(--on-navy-2)}
 .plaques{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:440px;margin-top:var(--s6)}
-.plaque{display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 16px;border-radius:var(--r-md);background:var(--on-navy);color:#191813;text-align:left}
+.plaque,.plaque-a{display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 16px;border-radius:var(--r-md);background:var(--on-navy);color:#191813;text-align:left}
+.plaque:has(.plaque-a){display:block;padding:0}
+.plaque-a{text-decoration:none;transition:box-shadow .2s}
+.plaque-a:hover{box-shadow:0 0 0 2px var(--on-navy)}
+.plaque .mark{width:24px;height:24px}
 .plaque small{display:block;font:500 .6875rem/1.2 var(--mono);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;color:#6a675e}
 .plaque b{display:block;margin-top:3px;font:600 1.125rem/1.15 var(--sans);letter-spacing:-.01em;white-space:nowrap}
-.plaque-dot{position:relative;width:8px;height:8px;border-radius:50%;background:#27b06a;flex:none}
-.plaque-dot::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1.5px solid #27b06a;opacity:.45}
 .get :focus-visible,.site-footer :focus-visible{outline-color:var(--lime)}
 
 /* ───────── Footer ───────── */
@@ -384,9 +411,9 @@ html.js .stage[data-title="off"] .dock h1{opacity:0}
    Its height is fixed so the window above (and Google's picture in it) never changes size.
    Narrow windows, and a phone on its side (see below). */
 @media (max-width:899px),(max-height:520px) and (orientation:landscape){
-  .stage{--band:88px;--dock:168px}
-  .band{grid-template-rows:44px 30px;row-gap:4px;padding-top:max(6px,env(safe-area-inset-top))}
-  .chip--cta,.chip--coach{display:none}
+  .stage{--dock:168px;--hdr:56px}
+  .band{padding-top:10px}
+  .chip--coach{display:none}
   .slate{height:30px;font-size:.6875rem}
   .dock{grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"say say score" "sub sub sub" "act act act" "rules credit credit";align-items:start;column-gap:12px;padding-top:11px;padding-bottom:calc(8px + env(safe-area-inset-bottom))}
   .dock-say,.dock-meta{display:contents}
@@ -424,7 +451,7 @@ html.js .stage[data-title="off"] .dock h1{opacity:0}
 /* A phone on its side: the dock stands beside the window, so the question and the two answers are
    on screen without having to scroll with a finger that is on the picture. */
 @media (max-height:520px) and (orientation:landscape){
-  .stage{--side:clamp(264px,36vw,340px);grid-template-columns:minmax(0,1fr) var(--side);grid-template-rows:minmax(0,1fr)}
+  .stage{--hdr:52px;--side:clamp(264px,36vw,340px);grid-template-columns:minmax(0,1fr) var(--side);grid-template-rows:auto minmax(0,1fr)}
   .band{right:var(--side);padding-right:var(--gutter)}
   .dock{height:auto;padding:12px max(16px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) 16px;border-top:0;border-left:1px solid var(--line)}
   .plates{grid-template-columns:1fr}
@@ -447,17 +474,26 @@ html.js .stage[data-title="off"] .dock h1{opacity:0}
   .prose td + td{margin-top:4px}
   .prose td:last-child{font-size:.8125rem;color:var(--ink-3)}
 }
+/* Where the window is short or narrow, the headline of the title card reaches up to the band. While
+   it shows with "Skip the fall", the slate (still all bars at this point) steps aside so the band
+   stays one line and clear of the headline. */
+@media (max-width:379px),(max-height:520px) and (orientation:landscape){
+  html.js .stage[data-phase="title"] .band:has(#skip:not([hidden])) .slate{display:none}
+}
 @media (max-width:379px){
   .chip{padding:0 10px;gap:6px}
-  .chip--brand{padding:0 10px 0 6px;font-size:1rem}
-  .slate{letter-spacing:.03em}
+  .brand{gap:9px;font-size:1.125rem}
+  .brand img{width:30px;height:30px}
+  .store{padding:0 10px 0 9px}
+  .band{gap:6px}
+  .slate{padding:0 9px 2px 8px;letter-spacing:.02em}
+  .slate-line{gap:6px}
   .score{gap:9px}
 }
 @media (max-width:339px){
   .plates{grid-template-columns:1fr}
   .stage{--dock:228px}
   .credit{white-space:normal;text-align:right}
-  .plaque-dot{display:none}
 }
 /* things you tap get a 44px target: phones by width, tablets by pointer */
 @media (max-width:640px),(pointer:coarse){
