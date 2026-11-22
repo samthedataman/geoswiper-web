@@ -6,8 +6,8 @@
 <title>GeoSwiper: guess where on Earth you are</title>
 <meta name="description" content="GeoSwiper drops you onto a real street somewhere in the world. Look around, walk down the road, and pick one of two answers before the clock runs out. Coming soon to the App Store and Google Play.">
 <link rel="canonical" href="https://geoswiper.com/">
-<meta name="theme-color" content="#faf8f2" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#131210" media="(prefers-color-scheme: dark)">
+<!-- the top of this page is the night header of the stage in both themes, so the browser bar is night too -->
+<meta name="theme-color" content="#071224" data-fixed>
 <meta name="color-scheme" content="light dark">
 <!-- "js" puts the headline on the night window while assets/try.js is on its way. If that script
      has not started the stage after four seconds, the class comes off and the page shows as shipped. -->
@@ -72,8 +72,9 @@
 <section class="stage" id="stage" data-state="static" data-phase="title" data-layer="photo" aria-label="Play a round of GeoSwiper">
   <a class="skip skip--stage" href="#answers">Skip to the two answers</a>
 
-  <!-- The header: its own row above the window, on paper like the dock, so the picture is framed top
-       and bottom. The App Store button reads "Coming soon" until APP_STORE_URL is set in assets/site.js. -->
+  <!-- The header: its own row above the window, in the stage's night, so the first screen is one piece
+       with the paper dock below. The App Store button reads "Coming soon" until APP_STORE_URL is set
+       in assets/site.js. -->
   <header class="site-header">
     <div class="bar">
       <a class="brand" href="/" aria-label="GeoSwiper home"><picture><source srcset="/assets/icon-96.webp" type="image/webp"><img src="/icon-192.png" width="192" height="192" alt=""></picture><span>GeoSwiper</span></a>
