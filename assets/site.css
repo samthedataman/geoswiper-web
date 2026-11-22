@@ -1,43 +1,54 @@
 /* GeoSwiper — shared stylesheet
-   Warm paper and ink, one serif voice, one sans for things you operate,
-   mono for labels and scores. Game colour lives in the product moments.
-   Two themes from one set of tokens: paper by day, the same ink inverted by
-   night. The theme follows the device unless the visitor picks one.
-   The home page's stage is night in both themes: it is a window onto the world. */
+   The brand is the street: sign yellow on asphalt and chalk.
+   One rounded voice for words (National Park, drawn from park trail signs) and Sono for
+   numbers and read-outs. Things you press are sign plates: a flat fill with a hard lower
+   edge. Right is green, wrong is red, and yellow is ours.
+   Two themes from one set of tokens: chalk by day, asphalt by night. The theme follows the
+   device unless the visitor picks one. The home page's stage is night in both themes: it is
+   a window onto the world. The same tokens are in the apps (ios/Sources/Theme.swift,
+   android/src/theme/theme.ts) and in docs/brand/BRAND.md of the mobile repo. */
 
 /* ───────── Tokens ───────── */
 :root{
-  /* paper and ink */
-  --paper:#faf8f2;
-  --paper-2:#f3efe5;
-  --paper-3:#e9e4d7;
-  --card:#ffffff;
-  --ink:#191813;
-  --ink-2:#45433c;
-  --ink-3:#6a675e;
-  --line:#e6e1d5;
-  --line-2:#d3cdbe;
-  --paper-rgb:250,248,242;
-  --ink-rgb:25,24,19;
-  /* one text accent */
-  --pine:#0c6a4f;
-  --pine-soft:rgba(12,106,79,.35);
-  /* game palette, taken from the app */
-  --navy:#0b1b33;
-  --night:#071224;
-  --lime:#9fe870;
-  --coral:#f4694f;
-  --miss:#c93a20;
-  /* text on navy */
-  --on-navy:#f6f3ea;
-  --on-navy-2:#c3cbda;
-  --on-navy-3:#aab4c6;
+  /* chalk and ink */
+  --paper:#fcf8ee;
+  --paper-2:#f5efdf;
+  --paper-3:#eae2cc;
+  --card:#fffdf7;
+  --ink:#1b1916;
+  --ink-2:#47433b;
+  --ink-3:#6b665b;
+  --line:#e8e0cc;
+  --line-2:#d2c8ae;
+  --paper-rgb:252,248,238;
+  --ink-rgb:27,25,22;
+  /* the brand colour, its pressed edge, and the ink that sits on it */
+  --sun:#ffc21a;
+  --sun-edge:#c98a00;
+  --on-sun:#1d1603;
+  /* the accent for text and focus rings: sun is too light to read on chalk, so it deepens there */
+  --mark:#8f5e00;
+  --mark-soft:rgba(143,94,0,.4);
+  /* the game: right, wrong */
+  --palm:#35d07f;
+  --palm-edge:#1f9d5b;
+  --brick:#ff5e4d;
+  --brick-edge:#c93a2b;
+  --miss:#c7301f;
+  /* night surfaces: the stage, the footer */
+  --tar:#1b1916;
+  --asphalt:#141311;
+  --on-night:#fbf6e9;
+  --on-night-2:#cfc8b7;
+  --on-night-3:#a69f8e;
+  /* the lower edge of a plate that is not coloured */
+  --edge:#cfc4a8;
   color-scheme:light;
 
   /* type */
-  --serif:"Newsreader","Iowan Old Style","New York",ui-serif,Georgia,serif;
-  --sans:"Figtree",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --display:"National Park","Arial Rounded MT Bold",ui-rounded,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --sans:"National Park",ui-rounded,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"Sono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   --fs-h2:clamp(2rem,1.35rem + 2.6vw,3.25rem);
   --fs-lede:clamp(1.0625rem,1rem + .32vw,1.25rem);
   --fs-body:1.0625rem;
@@ -51,10 +62,10 @@
   --sec:clamp(64px,8vw,112px);
 
   /* radii */
-  --r-xs:6px;--r-sm:10px;--r-md:14px;--r-pill:999px;
+  --r-xs:8px;--r-sm:12px;--r-md:16px;--r-pill:999px;
 
   /* shadows */
-  --sh-1:0 1px 2px rgba(25,24,19,.06);
+  --sh-1:0 1px 2px rgba(27,25,22,.06);
 
   /* motion: in, out */
   --ease-out:cubic-bezier(.16,1,.3,1);
@@ -64,39 +75,41 @@
    once for "follow the device", once for an explicit choice. Keep them equal. */
 @media (prefers-color-scheme:dark){
 :root:not([data-theme="light"]){
-  --paper:#131210;
-  --paper-2:#1a1916;
-  --paper-3:#2b2924;
-  --card:#211f1b;
-  --ink:#f5f2e9;
-  --ink-2:#cdc9bd;
-  --ink-3:#a29e92;
-  --line:#2b2924;
-  --line-2:#413e36;
-  --paper-rgb:19,18,16;
-  --ink-rgb:245,242,233;
-  --pine:#9fe870;
-  --pine-soft:rgba(159,232,112,.4);
+  --paper:#171512;
+  --paper-2:#1e1b18;
+  --paper-3:#2e2a25;
+  --card:#24211d;
+  --ink:#fbf6e9;
+  --ink-2:#d2cbb9;
+  --ink-3:#a69f8e;
+  --line:#2e2a25;
+  --line-2:#443f37;
+  --paper-rgb:23,21,18;
+  --ink-rgb:251,246,233;
+  --mark:#ffc21a;
+  --mark-soft:rgba(255,194,26,.45);
   --miss:#ff8a72;
+  --edge:#0c0b0a;
   --sh-1:0 1px 2px rgba(0,0,0,.4);
   color-scheme:dark;
 }
 }
 :root[data-theme="dark"]{
-  --paper:#131210;
-  --paper-2:#1a1916;
-  --paper-3:#2b2924;
-  --card:#211f1b;
-  --ink:#f5f2e9;
-  --ink-2:#cdc9bd;
-  --ink-3:#a29e92;
-  --line:#2b2924;
-  --line-2:#413e36;
-  --paper-rgb:19,18,16;
-  --ink-rgb:245,242,233;
-  --pine:#9fe870;
-  --pine-soft:rgba(159,232,112,.4);
+  --paper:#171512;
+  --paper-2:#1e1b18;
+  --paper-3:#2e2a25;
+  --card:#24211d;
+  --ink:#fbf6e9;
+  --ink-2:#d2cbb9;
+  --ink-3:#a69f8e;
+  --line:#2e2a25;
+  --line-2:#443f37;
+  --paper-rgb:23,21,18;
+  --ink-rgb:251,246,233;
+  --mark:#ffc21a;
+  --mark-soft:rgba(255,194,26,.45);
   --miss:#ff8a72;
+  --edge:#0c0b0a;
   --sh-1:0 1px 2px rgba(0,0,0,.4);
   color-scheme:dark;
 }
@@ -114,8 +127,8 @@ h1,h2,h3,p,ul,ol,dl,dd,figure{margin:0}
 ul,ol{padding:0}
 a{color:inherit}
 button{font:inherit;color:inherit}
-::selection{background:var(--lime);color:var(--navy)}
-:focus-visible{outline:2px solid var(--pine);outline-offset:3px;border-radius:4px}
+::selection{background:var(--sun);color:var(--on-sun)}
+:focus-visible{outline:2px solid var(--mark);outline-offset:3px;border-radius:4px}
 
 .sprite{position:absolute;width:0;height:0;overflow:hidden}
 .vh{position:absolute !important;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
@@ -124,21 +137,26 @@ button{font:inherit;color:inherit}
 .skip{position:absolute;left:16px;top:-64px;z-index:100;white-space:nowrap;background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:var(--r-sm);font-weight:600;text-decoration:none;transition:top .2s}
 .skip:focus{top:12px}
 
-h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.012em;text-wrap:balance;font-optical-sizing:auto}
-h1{font-weight:400;letter-spacing:-.022em}
+h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.02em;text-wrap:balance}
+h1{letter-spacing:-.026em}
 h2{font-size:var(--fs-h2);line-height:1.08;letter-spacing:-.018em}
-h1 em{font-style:italic;color:var(--pine)}
+/* the words that matter sit on a sign plate */
+h1 em{font-style:normal;padding:0 .16em .04em;margin:0 -.04em;border-radius:.18em;background:var(--sun);color:var(--on-sun);-webkit-box-decoration-break:clone;box-decoration-break:clone}
 .lede{font-size:var(--fs-lede);line-height:1.55;color:var(--ink-2);text-wrap:pretty}
-.label{font:500 var(--fs-label)/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.label{font:600 var(--fs-label)/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
 
 /* ───────── Buttons and links ───────── */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:var(--r-sm);border:0;font:600 var(--fs-small)/1 var(--sans);text-decoration:none;white-space:nowrap;cursor:pointer;transition:box-shadow .2s ease-in-out}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:var(--r-sm);border:0;font:700 var(--fs-small)/1 var(--sans);text-decoration:none;white-space:nowrap;cursor:pointer;transition:translate .09s ease-out,box-shadow .09s ease-out,filter .2s}
 .btn--sm{height:38px;padding:0 16px;font-size:.875rem}
-.btn--ink,.btn--go{background:var(--ink);color:var(--paper)}
-.btn--ink:hover,.btn--go:hover{box-shadow:0 0 0 2px var(--ink)}
-.btn--go{height:52px;padding:0 24px;border-radius:var(--r-md);font-size:1.0625rem}
-.btn--line{height:52px;padding:0 22px;border-radius:var(--r-md);font-size:1.0625rem;background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line-2)}
-.btn--line:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn--ink{background:var(--ink);color:var(--paper)}
+.btn--ink:hover{box-shadow:0 0 0 2px var(--ink)}
+/* the main action: a yellow plate with a hard lower edge. Pressing it pushes it down onto the edge. */
+.btn--go{height:52px;padding:0 24px;border-radius:var(--r-md);font-size:1.0625rem;font-weight:800;background:var(--sun);color:var(--on-sun);box-shadow:0 4px 0 var(--sun-edge)}
+.btn--go:hover{filter:brightness(1.05)}
+.btn--line{height:52px;padding:0 22px;border-radius:var(--r-md);font-size:1.0625rem;background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line-2),0 4px 0 var(--edge)}
+.btn--line:hover{box-shadow:inset 0 0 0 1.5px var(--ink),0 4px 0 var(--edge)}
+.btn--go:active{translate:0 3px;box-shadow:0 1px 0 var(--sun-edge)}
+.btn--line:active{translate:0 3px;box-shadow:inset 0 0 0 1.5px var(--ink),0 1px 0 var(--edge)}
 .btn .i{width:1.1em;height:1.1em}
 .iconbtn{flex:none;width:38px;height:38px;display:inline-grid;place-items:center;border-radius:var(--r-sm);border:1px solid var(--line-2);background:var(--card);color:var(--ink-2);cursor:pointer;transition:box-shadow .2s}
 .iconbtn:hover{color:var(--ink);box-shadow:0 0 0 1px var(--line-2)}
@@ -151,17 +169,17 @@ h1 em{font-style:italic;color:var(--pine)}
    row and wears the stage's night (see the stage). Its colours are the --hdr-* and --cta-* tokens,
    so one set of rules draws both. The App Store button is a small version of the plaques in the app
    section; it reads "Coming soon" until APP_STORE_URL is set in assets/site.js. */
-.site-header{--hdr:64px;--hdr-bg:rgba(var(--paper-rgb),.86);--hdr-fg:var(--ink);--hdr-fg-2:var(--ink-2);--hdr-hair:var(--line);--hdr-rule:var(--line-2);--hdr-hover:rgba(var(--ink-rgb),.06);--hdr-accent:var(--pine);--hdr-icon-ring:0 0 0 1px rgba(11,27,51,.08),0 1px 3px rgba(11,27,51,.28);--cta-bg:var(--ink);--cta-fg:var(--paper);position:sticky;top:0;z-index:50;background:var(--hdr-bg);color:var(--hdr-fg);-webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px);border-bottom:1px solid var(--hdr-hair)}
+.site-header{--hdr:64px;--hdr-bg:rgba(var(--paper-rgb),.86);--hdr-fg:var(--ink);--hdr-fg-2:var(--ink-2);--hdr-hair:var(--line);--hdr-rule:var(--line-2);--hdr-hover:rgba(var(--ink-rgb),.06);--hdr-accent:var(--sun);--hdr-icon-ring:0 0 0 1px rgba(27,25,22,.08),0 1px 3px rgba(27,25,22,.28);--cta-bg:var(--ink);--cta-fg:var(--paper);position:sticky;top:0;z-index:50;background:var(--hdr-bg);color:var(--hdr-fg);-webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px);border-bottom:1px solid var(--hdr-hair)}
 .bar{display:flex;align-items:center;gap:4px;height:var(--hdr)}
-.brand{flex:none;display:inline-flex;align-items:center;gap:11px;font:700 1.3125rem/1 var(--sans);letter-spacing:-.032em;text-decoration:none;color:inherit}
+.brand{flex:none;display:inline-flex;align-items:center;gap:11px;font:800 1.375rem/1 var(--display);letter-spacing:-.02em;text-decoration:none;color:inherit}
 .site-header .brand{margin-right:auto}
 .brand picture,.brand img{flex:none}
-.brand img{width:34px;height:34px;border-radius:23%;box-shadow:var(--hdr-icon-ring,0 0 0 1px rgba(11,27,51,.08),0 1px 3px rgba(11,27,51,.28));transition:transform .45s var(--ease-out)}
+.brand img{width:34px;height:34px;border-radius:23%;box-shadow:var(--hdr-icon-ring,0 0 0 1px rgba(27,25,22,.08),0 1px 3px rgba(27,25,22,.28));transition:transform .45s var(--ease-out)}
 .brand:hover img{transform:rotate(-8deg) scale(1.06)}
 /* the links: quiet until you point at one, then the accent draws in under it */
 .nav-links{display:flex;align-items:center;gap:2px;margin-right:2px}
 .nav-links a{position:relative;display:inline-flex;align-items:center;height:44px;padding:0 13px;font:600 .9375rem/1 var(--sans);letter-spacing:-.006em;color:var(--hdr-fg-2);text-decoration:none;transition:color .2s}
-.nav-links a::after{content:"";position:absolute;left:13px;right:13px;bottom:10px;height:2px;border-radius:2px;background:var(--hdr-accent);transform:scaleX(0);transform-origin:0 50%;transition:transform .35s var(--ease-out)}
+.nav-links a::after{content:"";position:absolute;left:13px;right:13px;bottom:9px;height:3px;border-radius:3px;background:var(--hdr-accent);transform:scaleX(0);transform-origin:0 50%;transition:transform .35s var(--ease-out)}
 .nav-links a:hover,.nav-links a:focus-visible{color:var(--hdr-fg)}
 .nav-links a:hover::after,.nav-links a:focus-visible::after{transform:scaleX(1)}
 /* the theme switch: a round ghost button (44px to the finger), then a hairline before the App Store button */
@@ -180,8 +198,8 @@ h1 em{font-style:italic;color:var(--pine)}
 .store:active{transform:scale(.97)}
 .store .mark{width:19px;height:19px;margin-top:-2px}
 .store-t{display:flex;flex-direction:column;gap:3px;white-space:nowrap}
-.store small{font:500 .59375rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;opacity:.74}
-.store b{font:650 .96875rem/1 var(--sans);letter-spacing:-.014em}
+.store small{font:600 .59375rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;opacity:.74}
+.store b{font:700 .96875rem/1 var(--sans);letter-spacing:-.01em}
 @media (max-width:899px){
   .site-header{--hdr:56px}
 }
@@ -208,14 +226,14 @@ h1 em{font-style:italic;color:var(--pine)}
    Ours over the window: only the game's small opaque chips along its top edge. Google draws its
    logo and its copyright row along the bottom edge of the window; the dock sits below the window,
    so nothing of ours can ever cover them. No rule here reaches inside what Google draws. */
-.stage{--dock:120px;--top:calc(var(--hdr) + env(safe-area-inset-top));--hdr:64px;position:relative;display:grid;grid-template-rows:auto minmax(0,1fr) auto;height:100vh;height:100svh;min-height:560px;min-height:max(340px,min(560px,100svh));background:var(--night)}
-.skip--stage{left:50%;translate:-50% 0;background:var(--on-navy);color:#191813}
+.stage{--dock:120px;--top:calc(var(--hdr) + env(safe-area-inset-top));--hdr:64px;position:relative;display:grid;grid-template-rows:auto minmax(0,1fr) auto;height:100vh;height:100svh;min-height:560px;min-height:max(340px,min(560px,100svh));background:var(--asphalt)}
+.skip--stage{left:50%;translate:-50% 0;background:var(--on-night);color:#1b1916}
 .skip--stage:focus{top:12px}
 
 /* the header, as the stage's first row: opaque night like the stage itself, so the first screen is
    one piece (night above, paper dock below). It is its own row and never sits over the picture. */
-.stage > .site-header{--hdr:inherit;--hdr-bg:var(--night);--hdr-fg:var(--on-navy);--hdr-fg-2:var(--on-navy-2);--hdr-hair:rgba(255,255,255,.1);--hdr-rule:rgba(255,255,255,.22);--hdr-hover:rgba(255,255,255,.09);--hdr-accent:var(--lime);--hdr-icon-ring:0 0 0 1px rgba(255,255,255,.16);--cta-bg:var(--on-navy);--cta-fg:#191813;position:relative;top:auto;z-index:7;grid-column:1/-1;-webkit-backdrop-filter:none;backdrop-filter:none}
-.stage > .site-header :focus-visible{outline-color:var(--lime)}
+.stage > .site-header{--hdr:inherit;--hdr-bg:var(--asphalt);--hdr-fg:var(--on-night);--hdr-fg-2:var(--on-night-2);--hdr-hair:rgba(255,255,255,.1);--hdr-rule:rgba(255,255,255,.22);--hdr-hover:rgba(255,255,255,.09);--hdr-accent:var(--sun);--hdr-icon-ring:0 0 0 1px rgba(255,255,255,.16);--cta-bg:var(--on-night);--cta-fg:#1b1916;position:relative;top:auto;z-index:7;grid-column:1/-1;-webkit-backdrop-filter:none;backdrop-filter:none}
+.stage > .site-header :focus-visible{outline-color:var(--sun)}
 .stage > .site-header .bar{height:var(--top);padding:env(safe-area-inset-top) max(var(--gutter),env(safe-area-inset-right)) 0 max(var(--gutter),env(safe-area-inset-left))}
 
 /* the chips along the window's top edge: the slate and the coach line left, "Skip the fall" and the
@@ -224,29 +242,29 @@ h1 em{font-style:italic;color:var(--pine)}
    rather than cut the slate short. */
 .band{position:absolute;top:var(--top);left:0;right:0;z-index:6;display:flex;flex-wrap:wrap;align-items:center;align-content:flex-start;gap:6px 8px;padding:12px max(var(--gutter),env(safe-area-inset-right)) 0 max(var(--gutter),env(safe-area-inset-left));pointer-events:none}
 .band-end{flex:0 1 auto;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px 8px;margin-left:auto}
-.chip{position:relative;flex:none;display:inline-flex;align-items:center;gap:8px;height:36px;margin:0;padding:0 13px;border:0;border-radius:var(--r-sm);background:var(--night);color:var(--on-navy);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);font:600 .875rem/1 var(--sans);text-decoration:none;white-space:nowrap;cursor:pointer;pointer-events:auto;transition:box-shadow .2s}
+.chip{position:relative;flex:none;display:inline-flex;align-items:center;gap:8px;height:36px;margin:0;padding:0 13px;border:0;border-radius:var(--r-sm);background:var(--asphalt);color:var(--on-night);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);font:600 .875rem/1 var(--sans);text-decoration:none;white-space:nowrap;cursor:pointer;pointer-events:auto;transition:box-shadow .2s}
 .chip::after{content:"";position:absolute;inset:-4px}          /* a 44px target round a 36px chip */
 a.chip:hover,button.chip:hover{box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
 .chip .i{width:16px;height:16px}
-.chip--coach{height:32px;font-weight:500;font-size:.8125rem;cursor:default;color:var(--on-navy-2);animation:chip-in .32s var(--ease-out) both}
-.chip--coach .i{color:var(--lime)}
+.chip--coach{height:32px;font-weight:500;font-size:.8125rem;cursor:default;color:var(--on-night-2);animation:chip-in .32s var(--ease-out) both}
+.chip--coach .i{color:var(--sun)}
 @keyframes chip-in{from{opacity:0;translate:0 -6px}}
-.band :focus-visible,.window :focus-visible{outline-color:var(--lime)}
+.band :focus-visible,.window :focus-visible{outline-color:var(--sun)}
 
 /* the slate: where you are, redacted until you answer. The hairline under it is the altitude
    on the way down and the clock on the street. */
-.slate{position:relative;flex:none;display:inline-flex;align-items:center;height:32px;max-width:100%;padding:0 13px 2px 10px;overflow:hidden;border-radius:var(--r-xs);background:var(--night);color:var(--on-navy);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);font:500 .75rem/1 var(--mono);letter-spacing:.06em;white-space:nowrap;pointer-events:auto}
+.slate{position:relative;flex:none;display:inline-flex;align-items:center;height:32px;max-width:100%;padding:0 13px 2px 10px;overflow:hidden;border-radius:var(--r-xs);background:var(--asphalt);color:var(--on-night);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);font:500 .75rem/1 var(--mono);letter-spacing:.06em;white-space:nowrap;pointer-events:auto}
 .slate-line{display:flex;align-items:center;gap:8px}
-.slate .i{width:13px;height:13px;color:var(--lime)}
-.slate .red{font-style:normal;letter-spacing:0;color:var(--on-navy-3)}
+.slate .i{width:13px;height:13px;color:var(--sun)}
+.slate .red{font-style:normal;letter-spacing:0;color:var(--on-night-3)}
 .hair{position:absolute;inset:auto 0 0;height:3px;background:rgba(255,255,255,.16)}
-.hair b{display:block;height:100%;background:var(--lime);transform-origin:0 50%;transform:scaleX(var(--f,0));transition:background-color .3s}
-.stage[data-clock="low"] .hair b{background:var(--coral)}
+.hair b{display:block;height:100%;background:var(--sun);transform-origin:0 50%;transform:scaleX(var(--f,0));transition:background-color .3s}
+.stage[data-clock="low"] .hair b{background:var(--brick)}
 .stage[data-state="loading"] .hair b,.stage[data-state="globe"] .hair b{--f:1;animation:hair-wait 1.4s ease-in-out infinite}
 @keyframes hair-wait{0%{transform:translateX(-100%) scaleX(.4)}100%{transform:translateX(100%) scaleX(.4)}}
 
 /* the window. A stacking context of its own: whatever is in it stays under the band and the dock */
-.window{position:relative;isolation:isolate;min-height:0;overflow:hidden;overflow:clip;background:var(--night)}
+.window{position:relative;isolation:isolate;min-height:0;overflow:hidden;overflow:clip;background:var(--asphalt)}
 .layer{position:absolute;inset:0}
 /* Google's two layers: the panorama underneath, the 3D map on top. The map fades up once Google
    has drawn the Earth, and the dissolve into the street is the map fading out. Google gives the
@@ -260,12 +278,12 @@ a.chip:hover,button.chip:hover{box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
 /* stops drags while the camera flies; the bottom 56px stay open so Google's logo and links work */
 #shield{position:absolute;inset:0 0 56px;z-index:2}
 /* a full cover for cuts between places: picture and attribution together, never part of either */
-#curtain{position:absolute;inset:0;z-index:3;background:var(--night);opacity:0;transition:opacity .24s linear}
+#curtain{position:absolute;inset:0;z-index:3;background:var(--asphalt);opacity:0;transition:opacity .24s linear}
 #curtain[data-on="1"]{opacity:1}
 
 /* the licensed photo: a still and, once assets/pano.js runs, a canvas over it showing the same
    view, which can then be dragged round. Cropped by the box, never stretched. */
-.pano{overflow:hidden;overflow:clip;background:var(--night);touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.pano{overflow:hidden;overflow:clip;background:var(--asphalt);touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .pano-still{position:absolute;left:50%;top:50%;width:100%;height:100%;max-width:none;object-fit:cover;translate:-50% -50%;pointer-events:none}
 /* the first street drops into the window from above, as every later one does (assets/pano.js) */
 .pano.is-up .pano-still{translate:-50% -152%}
@@ -292,15 +310,14 @@ html.js .stage[data-state="static"] :is(#photo,.nojs,.credit){visibility:hidden}
    stands in the window itself, large, on night: the first screen is never an empty box. It is our
    own type on our own night; it fades as the picture comes up and it never reaches the bottom of
    the window, where Google's logo and copyright row are. Without script it stays in the dock. */
-html.js .stage[data-phase="title"] .dock h1{position:absolute;grid-area:auto;left:max(var(--gutter),env(safe-area-inset-left));right:max(var(--gutter),env(safe-area-inset-right));bottom:calc(100% + 84px);max-width:11.5em;color:var(--on-navy);font-size:clamp(3rem,min(1.6rem + 7.4vw,16vh),8.75rem);font-size:clamp(3rem,min(1.6rem + 7.4vw,16svh),8.75rem);line-height:.96;letter-spacing:-.03em;pointer-events:none;transition:opacity .5s linear}
-html.js .stage[data-phase="title"] .dock h1 em{color:var(--lime)}
+html.js .stage[data-phase="title"] .dock h1{position:absolute;grid-area:auto;left:max(var(--gutter),env(safe-area-inset-left));right:max(var(--gutter),env(safe-area-inset-right));bottom:calc(100% + 84px);max-width:11.5em;color:var(--on-night);font-size:clamp(2.75rem,min(1.5rem + 6.6vw,15vh),8rem);font-size:clamp(2.75rem,min(1.5rem + 6.6vw,15svh),8rem);line-height:1.08;letter-spacing:-.03em;pointer-events:none;transition:opacity .5s linear}
 html.js .stage[data-title="off"] .dock h1{opacity:0}
 
 /* the dock */
 .dock{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;column-gap:clamp(20px,3vw,44px);height:calc(var(--dock) + env(safe-area-inset-bottom));padding:0 max(var(--gutter),env(safe-area-inset-right)) env(safe-area-inset-bottom) max(var(--gutter),env(safe-area-inset-left));background:var(--paper);border-top:1px solid var(--line);touch-action:pan-y}
 .dock-say{min-width:0}
-.dock h1{font-size:clamp(2.25rem,1.2rem + 2.5vw,3.25rem);line-height:1.04}
-.say{font:500 clamp(1.5rem,1.15rem + 1vw,2rem)/1.12 var(--serif);letter-spacing:-.016em;text-wrap:balance}
+.dock h1{font-size:clamp(2.125rem,1.15rem + 2.3vw,3rem);line-height:1.12}
+.say{font:800 clamp(1.5rem,1.15rem + 1vw,2rem)/1.12 var(--display);letter-spacing:-.02em;text-wrap:balance}
 .sub{margin-top:6px;font-size:.9375rem;line-height:1.35;color:var(--ink-2);text-wrap:pretty}
 .sub--hint{font:500 var(--fs-label)/1.35 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
 .sub--coach{display:none}
@@ -317,25 +334,35 @@ html.js .stage[data-title="off"] .dock h1{opacity:0}
 
 /* the two answers */
 .plates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:min(46vw,480px)}
-.plate{position:relative;display:flex;align-items:center;gap:12px;min-width:0;height:56px;padding:0 44px 0 14px;border:0;border-radius:var(--r-md);background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line-2),var(--sh-1);font:600 1.0625rem/1.15 var(--sans);letter-spacing:-.005em;text-align:left;cursor:pointer;transition:box-shadow .16s,background-color .16s,color .16s;animation:rise .32s var(--ease-out) both}
+.plate{position:relative;display:flex;align-items:center;gap:12px;min-width:0;height:56px;padding:0 44px 0 14px;border:0;border-radius:var(--r-md);background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line-2),0 3px 0 var(--edge);font:700 1.0625rem/1.15 var(--sans);letter-spacing:-.005em;text-align:left;cursor:pointer;transition:box-shadow .16s,background-color .16s,color .16s,translate .09s ease-out;animation:rise .32s var(--ease-out) both}
 .plate + .plate{animation-delay:70ms}
 @keyframes rise{from{opacity:0;translate:0 24px}}
-.plate:hover{box-shadow:inset 0 0 0 1.5px var(--ink),var(--sh-1)}
+.plate:hover{box-shadow:inset 0 0 0 1.5px var(--ink),0 3px 0 var(--edge)}
+.plate:active:not([aria-disabled="true"]){translate:0 2px;box-shadow:inset 0 0 0 1.5px var(--ink),0 1px 0 var(--edge)}
 .plate-name{min-width:0;overflow-wrap:break-word}
 .cc{flex:none;min-width:30px;padding:5px 6px;border-radius:5px;background:var(--ink);color:var(--paper);font:700 .6875rem/1 var(--mono);font-style:normal;letter-spacing:.06em;text-align:center}
 .plate .plate-ok,.plate .plate-no{position:absolute;right:14px;top:50%;width:20px;height:20px;margin-top:-10px;stroke-width:2.6;display:none}
 .plate[aria-disabled="true"]{cursor:default}
-.plate[aria-disabled="true"]:hover{box-shadow:inset 0 0 0 1.5px var(--line-2),var(--sh-1)}
+.plate[aria-disabled="true"]:hover{box-shadow:inset 0 0 0 1.5px var(--line-2),0 3px 0 var(--edge)}
 .plate.is-dim{color:var(--ink-3)}
-/* right: lime and a check that draws. wrong: coral, a cross and one shake. never colour alone */
-.plate.is-right{background:var(--lime);color:var(--navy);box-shadow:none}
-.plate.is-right .cc,.plate.is-wrong .cc{background:var(--navy);color:#fff}
-.plate.is-wrong{background:var(--coral);color:var(--navy);box-shadow:none;animation:shake .26s ease-in-out both}
-.plate.is-answer,.plate.is-answer:hover{box-shadow:inset 0 0 0 2px var(--pine),0 0 0 3px var(--lime)}
+/* right: green and a check that draws. wrong: red, a cross and one shake. never colour alone */
+.plate.is-right,.plate.is-right:hover{background:var(--palm);color:var(--tar);box-shadow:0 3px 0 var(--palm-edge)}
+.plate.is-right .cc,.plate.is-wrong .cc{background:var(--tar);color:#fff}
+.plate.is-wrong,.plate.is-wrong:hover{background:var(--brick);color:var(--tar);box-shadow:0 3px 0 var(--brick-edge);animation:shake .26s ease-in-out both}
+.plate.is-answer,.plate.is-answer:hover{box-shadow:inset 0 0 0 2.5px var(--palm-edge),0 3px 0 var(--palm-edge)}
 .plate.is-right .plate-ok,.plate.is-answer .plate-ok,.plate.is-wrong .plate-no{display:block}
-.plate.is-answer .plate-ok{color:var(--pine)}
+.plate.is-answer .plate-ok{color:var(--palm-edge)}
 .plate-ok{stroke-dasharray:24;animation:draw .26s ease-out both}
 @keyframes draw{from{stroke-dashoffset:24}}
+/* side to side: on a touch screen the two answers lean with a sideways swipe of the dock, and the
+   one the finger is heading for turns yellow before it is picked (assets/try.js) */
+.plates{translate:var(--lean,0px) 0;transition:translate .2s var(--ease-out)}
+.plates.is-held{transition:none}
+.plate.is-lean,.plate.is-lean:hover{background:var(--sun);color:var(--on-sun);box-shadow:0 3px 0 var(--sun-edge)}
+.plate.is-lean .cc{background:var(--on-sun);color:var(--sun)}
+/* which keys answer: the arrows, or 1 and 2 while focus is inside the picture (the arrows look round there) */
+kbd{display:inline-block;min-width:1.7em;padding:.22em .4em;border-radius:5px;background:var(--paper-3);color:var(--ink);font:700 1em/1 var(--mono);letter-spacing:0;text-align:center}
+.stage:has(.window:focus-within) .keys-side,.stage:not(:has(.window:focus-within)) .keys-num{display:none}
 @keyframes shake{0%,100%{translate:0}25%{translate:-6px 0}75%{translate:6px 0}}
 .ends{display:flex;align-items:center;gap:12px}
 .dock-act > .btn,.ends{animation:rise .32s var(--ease-out) both}
@@ -367,41 +394,44 @@ html.js .stage[data-title="off"] .dock h1{opacity:0}
 
 /* ───────── The rules ───────── */
 .rules{padding:var(--sec) 0}
-.rules-list{list-style:none;margin-top:var(--s6);font:400 clamp(1.75rem,1.05rem + 2.7vw,3.375rem)/1.1 var(--serif);letter-spacing:-.022em;font-optical-sizing:auto}
+.rules-list{list-style:none;margin-top:var(--s6);font:800 clamp(1.625rem,1rem + 2.3vw,3rem)/1.14 var(--display);letter-spacing:-.024em}
 .rules-list li{max-width:22em;padding-block:.2em;text-wrap:balance}
 .rules-list li:nth-child(even){color:var(--ink-3)}
 .rules-foot{max-width:34em;margin-top:var(--s7);padding-top:var(--s5);border-top:1px solid var(--line-2);font-size:var(--fs-lede);line-height:1.55;color:var(--ink-2);text-wrap:pretty}
 
 /* ───────── The app ───────── */
-.get{background:var(--navy);color:var(--on-navy);text-align:center;padding:clamp(72px,9vw,120px) 0;scroll-margin-top:0}
+.get{background:var(--sun);color:var(--on-sun);text-align:center;padding:clamp(72px,9vw,120px) 0;scroll-margin-top:0}
 .get-inner{display:flex;flex-direction:column;align-items:center}
-.get-icon{width:84px;height:84px;border-radius:22%;box-shadow:0 0 0 1px rgba(255,255,255,.12),0 18px 40px -12px rgba(0,0,0,.6)}
-.get h2{margin-top:var(--s6);color:#fff}
-.get .lede{margin-top:var(--s4);color:var(--on-navy-2)}
+/* the icon is a yellow tile on a yellow band: an ink border makes it a sign */
+.get-icon{width:84px;height:84px;border-radius:22%;box-shadow:0 0 0 4px var(--on-sun),0 7px 0 4px var(--on-sun)}
+.get h2{margin-top:var(--s6);color:var(--on-sun)}
+.get .lede{margin-top:var(--s4);color:var(--on-sun);opacity:.82}
 .plaques{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:440px;margin-top:var(--s6)}
-.plaque,.plaque-a{display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 16px;border-radius:var(--r-md);background:var(--on-navy);color:#191813;text-align:left}
+.plaque,.plaque-a{display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 16px;border-radius:var(--r-md);background:var(--tar);color:var(--on-night);text-align:left}
+.plaque{box-shadow:0 4px 0 var(--sun-edge)}
 .plaque:has(.plaque-a){display:block;padding:0}
 .plaque-a{text-decoration:none;transition:box-shadow .2s}
-.plaque-a:hover{box-shadow:0 0 0 2px var(--on-navy)}
+.plaque-a:hover{box-shadow:0 0 0 2px var(--tar)}
 .plaque .mark{width:24px;height:24px}
-.plaque small{display:block;font:500 .6875rem/1.2 var(--mono);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;color:#6a675e}
-.plaque b{display:block;margin-top:3px;font:600 1.125rem/1.15 var(--sans);letter-spacing:-.01em;white-space:nowrap}
-.get :focus-visible,.site-footer :focus-visible{outline-color:var(--lime)}
+.plaque small{display:block;font:500 .6875rem/1.2 var(--mono);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;color:var(--on-night-3)}
+.plaque b{display:block;margin-top:3px;font:700 1.125rem/1.15 var(--sans);letter-spacing:-.01em;white-space:nowrap}
+.get :focus-visible{outline-color:var(--on-sun)}
+.site-footer :focus-visible{outline-color:var(--sun)}
 
 /* ───────── Footer ───────── */
-.site-footer{background:var(--night);color:var(--on-navy-3);font-size:.875rem}
+.site-footer{background:var(--asphalt);color:var(--on-night-3);font-size:.875rem}
 .foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s4) var(--s6);padding-block:var(--s6)}
 .site-footer .brand{color:#fff;font-size:1.0625rem}
 .site-footer .brand img{width:28px;height:28px}
 .foot-nav{display:flex;gap:var(--s5)}
-.foot-nav a{color:var(--on-navy-2);text-decoration:none;font-weight:500;padding:4px 0}
+.foot-nav a{color:var(--on-night-2);text-decoration:none;font-weight:500;padding:4px 0}
 .foot-nav a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px}
 .foot-legal{font:500 var(--fs-label)/1.4 var(--mono);letter-spacing:.06em}
 
 /* ───────── Sub-pages (privacy, support, credits) ───────── */
 .page{padding:clamp(40px,6vw,88px) 0 clamp(64px,8vw,112px)}
 .prose{max-width:44rem;margin-inline:auto}
-.prose h1{font-size:clamp(2.5rem,1.9rem + 2.6vw,3.75rem);line-height:1.05}
+.prose h1{font-size:clamp(2.375rem,1.8rem + 2.4vw,3.5rem);line-height:1.08}
 .prose .sub{margin-top:var(--s4);padding-bottom:var(--s6);border-bottom:1px solid var(--line-2);font:500 .8125rem/1.6 var(--mono);letter-spacing:.02em;color:var(--ink-3);animation:none}
 .prose h2{margin:var(--s7) 0 var(--s3);font-size:clamp(1.5rem,1.36rem + .6vw,1.75rem);line-height:1.2;scroll-margin-top:80px}
 .prose p,.prose li{color:var(--ink-2);line-height:1.7}
@@ -411,14 +441,56 @@ html.js .stage[data-title="off"] .dock h1{opacity:0}
 .prose ul{margin:var(--s3) 0 0;padding-left:1.25em}
 .prose li{margin:var(--s3) 0;padding-left:.25em}
 .prose li::marker{color:var(--ink-3)}
-.prose strong{color:var(--ink);font-weight:600}
-.prose a{color:var(--pine);font-weight:500;text-decoration:underline;text-decoration-color:var(--pine-soft);text-decoration-thickness:1.5px;text-underline-offset:3px;overflow-wrap:anywhere}
-.prose a:hover{text-decoration-color:var(--pine)}
+.prose strong{color:var(--ink);font-weight:700}
+.prose a{color:var(--ink);font-weight:600;text-decoration:underline;text-decoration-color:var(--sun);text-decoration-thickness:2.5px;text-underline-offset:3px;overflow-wrap:anywhere}
+.prose a:hover{background:var(--sun);color:var(--on-sun);text-decoration-color:var(--sun)}
 .table-wrap{margin-top:var(--s5);border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);overflow-x:auto}
 .prose table{width:100%;min-width:560px;border-collapse:collapse;font-size:.9063rem;line-height:1.5}
 .prose th{font:500 var(--fs-label)/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);background:var(--paper)}
 .prose th,.prose td{padding:14px 16px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;color:var(--ink-2)}
 .prose tr:last-child td{border-bottom:0}
+
+/* ───────── Side to side (wide windows) ─────────
+   During a round the dock is the game: the left answer at the left end, the right answer at the
+   right end, the question between them. Each answer carries the arrow key that picks it.
+   The dock is taller here for good, so the window above never changes size during a try. */
+@media (min-width:900px) and (min-height:521px){
+  .stage{--dock:148px}
+  .stage:is([data-state="playing"],[data-state="verdict"]) .dock{grid-template-columns:minmax(0,1fr) minmax(220px,auto) minmax(0,1fr);grid-template-rows:auto auto;grid-template-areas:"left say right" "left meta right";align-content:center;row-gap:8px;column-gap:clamp(20px,3vw,48px)}
+  .stage:is([data-state="playing"],[data-state="verdict"]) :is(.dock-act,.plates){display:contents}
+  .stage:is([data-state="playing"],[data-state="verdict"]) .dock-say{grid-area:say;text-align:center}
+  .stage:is([data-state="playing"],[data-state="verdict"]) .dock-meta{grid-area:meta;justify-self:center;justify-content:center;max-width:380px;gap:6px 16px}
+  .stage:is([data-state="playing"],[data-state="verdict"]) .credit{white-space:normal;text-align:center}
+  .stage:is([data-state="playing"],[data-state="verdict"]) .score{justify-content:center}
+  .stage:is([data-state="playing"],[data-state="verdict"]) .sub--hint{margin-top:8px}
+  .stage:is([data-state="playing"],[data-state="verdict"]) .plate{height:76px;gap:14px;border-radius:20px;font-size:1.375rem}
+  /* the check or the cross waits on the inner side of each answer, so the name never moves */
+  .stage:is([data-state="playing"],[data-state="verdict"]) .plate[data-ans="1"]{padding:0 56px 0 18px}
+  .stage:is([data-state="playing"],[data-state="verdict"]) .plate[data-ans="2"]{padding:0 18px 0 56px}
+  .plate[data-ans="1"]{grid-area:left}
+  .plate[data-ans="2"]{grid-area:right;flex-direction:row-reverse;text-align:right}
+  .plate::before{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:11px;background:var(--paper-3);color:var(--ink);font:700 1.125rem/1 var(--mono);transition:background-color .16s,color .16s}
+  .plate[data-ans="1"]::before{content:"←"}
+  .plate[data-ans="2"]::before{content:"→"}
+  .plate:hover:not([aria-disabled="true"])::before{background:var(--sun);color:var(--on-sun)}
+  .plate:is(.is-right,.is-wrong)::before{background:var(--tar);color:#fff}
+  .plate-name{flex:1 1 auto}
+  .plate .cc{min-width:34px;padding:6px 7px;font-size:.75rem}
+  .plate .plate-ok,.plate .plate-no{width:24px;height:24px;margin-top:-12px;right:18px}
+  .plate[data-ans="2"] :is(.plate-ok,.plate-no){right:auto;left:18px}
+}
+/* a narrower wide dock: the answers keep their names whole, so the key caps go (the line under the
+   question still names the keys) and the middle column narrows */
+@media (min-width:900px) and (min-height:521px) and (max-width:1099px){
+  .stage:is([data-state="playing"],[data-state="verdict"]) .plate{font-size:1.125rem;gap:10px}
+  .stage:is([data-state="playing"],[data-state="verdict"]) .plate[data-ans="1"]{padding:0 46px 0 14px}
+  .stage:is([data-state="playing"],[data-state="verdict"]) .plate[data-ans="2"]{padding:0 14px 0 46px}
+  .plate::before{display:none}
+  .plate[data-ans="1"] :is(.plate-ok,.plate-no){right:14px}
+  .plate[data-ans="2"] :is(.plate-ok,.plate-no){left:14px}
+  .stage:is([data-state="playing"],[data-state="verdict"]) .dock{grid-template-columns:minmax(0,1fr) minmax(190px,auto) minmax(0,1fr);column-gap:16px}
+  .stage:is([data-state="playing"],[data-state="verdict"]) .dock-meta{max-width:300px}
+}
 
 /* ───────── Responsive ───────── */
 @media (min-width:900px) and (max-width:1239px){
