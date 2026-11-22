@@ -463,7 +463,7 @@
   d.addEventListener('keydown', function (e) {
     if (e.altKey || e.ctrlKey || e.metaKey || e.defaultPrevented) return;
     var a = d.activeElement;
-    if (!(stage.contains(a) || ((!a || a === d.body) && most(0.5)))) return;
+    if (!((stage.contains(a) && !a.closest('.site-header')) || ((!a || a === d.body) && most(0.5)))) return;
     if (e.key === 'Escape' && !skipBtn.hidden) { e.preventDefault(); skipNow(); }
     else if (state === 'playing' && (e.key === '1' || e.key === '2')) { e.preventDefault(); viaKey = true; answer(+e.key); viaKey = false; }
     else if (state === 'between' && e.key === 'Enter' && !(a && a.closest && a.closest('a,button,summary,input,select,textarea,#pano,#map3d'))) { e.preventDefault(); advance(); }
@@ -471,7 +471,7 @@
   /* the first thing the visitor does in a round starts its clock */
   ['pointerdown', 'keydown', 'touchstart'].forEach(function (t) {
     stage.addEventListener(t, function (e) {
-      if (state === 'playing' && !(e.target.closest && e.target.closest('.band'))) startClock();
+      if (state === 'playing' && !(e.target.closest && e.target.closest('.band, .site-header'))) startClock();
     }, { capture: true, passive: true });
   });
   /* touch: a sideways flick of the dock, towards a plate, answers */
