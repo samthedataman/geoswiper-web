@@ -29,7 +29,7 @@ var APP_STORE_URL = '';
     });
     each(tints, function (m) {
       if (!m.hasAttribute('data-auto')) m.setAttribute('data-auto', m.getAttribute('content'));
-      m.setAttribute('content', forced ? (dark ? '#131210' : '#faf8f2') : m.getAttribute('data-auto'));
+      m.setAttribute('content', forced ? (dark ? '#171512' : '#fcf8ee') : m.getAttribute('data-auto'));
     });
   }
   each(switches, function (b) {

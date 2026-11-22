@@ -229,9 +229,20 @@
     if (clockOn && !d.hidden && most(0.5) && dt > 0 && dt < 400) clock.left -= dt;
     var f = Math.max(0, clock.left / clock.total);
     hair.style.setProperty('--f', clockOn ? f.toFixed(3) : '0');
-    if (clockOn && f < 0.25) stage.setAttribute('data-clock', 'low'); else stage.removeAttribute('data-clock');
+    if (clockOn && f < 0.25) { stage.setAttribute('data-clock', 'low'); rumble(f); } else stage.removeAttribute('data-clock');
     if (clock.left <= 0) return verdict(0, true);
     requestAnimationFrame(tick);
+  }
+  /* The red is felt as well as seen. Where the phone lets a web page vibrate (Android; an iPhone
+     gives a page no vibration, the app does it there), it rumbles once a second while the hairline
+     is red: two pulses, like a heartbeat, harder as the time runs out. Not with motion turned off. */
+  function rumble(f) {
+    if (calm || typeof navigator.vibrate !== 'function') return;
+    var s = Math.ceil(clock.left / 1000);
+    if (s < 1 || s === clock.buzzed) return;
+    clock.buzzed = s;
+    var k = Math.max(0, Math.min(1, 1 - f / 0.25));
+    try { navigator.vibrate([Math.round(35 + 55 * k), 90, Math.round(25 + 45 * k)]); } catch (e) {}
   }
   function paintClock() {
     clockBtn.setAttribute('aria-checked', clockOn ? 'true' : 'false');
@@ -456,16 +467,20 @@
   });
   [1, 2].forEach(function (n) { plate[n].addEventListener('click', function () { answer(n); }); });
 
-  /* Keys 1 and 2 answer, Enter goes on to the next place and Escape skips the fall, while focus is in
-     the stage (or nowhere, with the stage on screen). Whoever answers by key gets the focus on "Next
-     place", so the whole try can be played from the keyboard. Arrow keys are left to Street View,
-     which uses them to look and walk; Enter is left to whatever control has the focus. */
+  /* Side to side, as in the app: the left arrow picks the left answer and the right arrow the right
+     one (1 and 2 do the same). Enter goes on to the next place and Escape skips the fall, while focus
+     is in the stage (or nowhere, with the stage on screen). Whoever answers by key gets the focus on
+     "Next place", so the whole try can be played from the keyboard. While focus is inside the picture
+     the arrow keys stay with Street View and the photo, which use them to look and walk (1 and 2
+     still answer there, and the hint under the question says so); Enter is left to whatever control
+     has the focus. */
   d.addEventListener('keydown', function (e) {
     if (e.altKey || e.ctrlKey || e.metaKey || e.defaultPrevented) return;
     var a = d.activeElement;
     if (!((stage.contains(a) && !a.closest('.site-header')) || ((!a || a === d.body) && most(0.5)))) return;
     if (e.key === 'Escape' && !skipBtn.hidden) { e.preventDefault(); skipNow(); }
     else if (state === 'playing' && (e.key === '1' || e.key === '2')) { e.preventDefault(); viaKey = true; answer(+e.key); viaKey = false; }
+    else if (state === 'playing' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !(a && a.closest && a.closest('.window'))) { e.preventDefault(); viaKey = true; answer(e.key === 'ArrowLeft' ? 1 : 2); viaKey = false; }
     else if (state === 'between' && e.key === 'Enter' && !(a && a.closest && a.closest('a,button,summary,input,select,textarea,#pano,#map3d'))) { e.preventDefault(); advance(); }
   });
   /* the first thing the visitor does in a round starts its clock */
@@ -474,19 +489,34 @@
       if (state === 'playing' && !(e.target.closest && e.target.closest('.band, .site-header'))) startClock();
     }, { capture: true, passive: true });
   });
-  /* touch: a sideways flick of the dock, towards a plate, answers */
-  var flick = null;
+  /* touch: swipe the dock side to side. The answers lean with the finger and the one it is heading
+     for lights up; letting go past the mark picks it, letting go short of it does nothing. */
+  var flick = null, REACH = 56;
+  function tilt(dx, on) {
+    plates.classList.toggle('is-held', on);
+    plates.style.setProperty('--lean', on ? Math.max(-22, Math.min(22, dx * 0.3)).toFixed(1) + 'px' : '0px');
+    plate[1].classList.toggle('is-lean', on && dx <= -REACH);
+    plate[2].classList.toggle('is-lean', on && dx >= REACH);
+  }
+  function sideways(f, e) {
+    var dx = e.clientX - f.x, dy = e.clientY - f.y;
+    return Math.abs(dx) > 2 * Math.abs(dy) ? dx : 0;
+  }
   dock.addEventListener('pointerdown', function (e) {
-    flick = e.pointerType === 'touch' && state === 'playing' ? { id: e.pointerId, x: e.clientX, y: e.clientY, t: e.timeStamp } : null;
+    flick = e.pointerType !== 'mouse' && state === 'playing' ? { id: e.pointerId, x: e.clientX, y: e.clientY } : null;
+  });
+  dock.addEventListener('pointermove', function (e) {
+    if (flick && e.pointerId === flick.id && state === 'playing') tilt(sideways(flick, e), true);
   });
   dock.addEventListener('pointerup', function (e) {
     var f = flick;
     flick = null;
-    if (!f || e.pointerId !== f.id || e.timeStamp - f.t > 600) return;
-    var dx = e.clientX - f.x, dy = e.clientY - f.y;
-    if (Math.abs(dx) > 56 && Math.abs(dx) > 2 * Math.abs(dy)) answer(dx < 0 ? 1 : 2);
+    tilt(0, false);
+    if (!f || e.pointerId !== f.id) return;
+    var dx = sideways(f, e);
+    if (Math.abs(dx) >= REACH) answer(dx < 0 ? 1 : 2);
   });
-  dock.addEventListener('pointercancel', function () { flick = null; });
+  dock.addEventListener('pointercancel', function () { flick = null; tilt(0, false); });
 
   /* "Skip to the two answers": focus goes to the first answer (or to where the answers will be), the page stays put */
   stage.querySelector('.skip--stage').addEventListener('click', function (e) {

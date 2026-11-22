@@ -7,7 +7,7 @@
 <meta name="description" content="GeoSwiper drops you onto a real street somewhere in the world. Look around, walk down the road, and pick one of two answers before the clock runs out. Coming soon to the App Store and Google Play.">
 <link rel="canonical" href="https://geoswiper.com/">
 <!-- the top of this page is the night header of the stage in both themes, so the browser bar is night too -->
-<meta name="theme-color" content="#071224" data-fixed>
+<meta name="theme-color" content="#141311" data-fixed>
 <meta name="color-scheme" content="light dark">
 <!-- "js" puts the headline on the night window while assets/try.js is on its way. If that script
      has not started the stage after four seconds, the class comes off and the page shows as shipped. -->
@@ -31,10 +31,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&amp;family=JetBrains+Mono:wght@500;700&amp;family=Newsreader:opsz,wght@6..72,400..500&amp;display=swap" rel="stylesheet">
-<!-- The serif italic is used for three words in the headline only, so it is fetched as a
-     subset of just those letters. If the italic words change, update text= to match. -->
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@1,6..72,400&amp;text=whereonEarth%20&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=National+Park:wght@400..800&amp;family=Sono:wght,MONO@400..800,1&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 <!-- maps-config.js sets the public, referrer-restricted Google Maps key. It ships empty: with no
      key the page asks Google Maps for nothing and plays on the licensed photos (assets/try.js). -->
@@ -115,7 +112,7 @@
       <h1 id="title">Guess <em>where on Earth</em> you are.</h1>
       <p class="say" id="say" hidden></p>
       <p class="sub" id="sub" hidden></p>
-      <p class="sub sub--hint" id="hint" hidden>Press 1 or 2</p>
+      <p class="sub sub--hint" id="hint" hidden><span class="keys-side">Press <kbd>←</kbd> or <kbd>→</kbd></span><span class="keys-num">Press 1 or 2</span></p>
       <p class="sub sub--coach" id="coach2" hidden></p>
     </div>
     <div class="dock-act" id="answers" tabindex="-1">

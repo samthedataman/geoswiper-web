@@ -482,7 +482,7 @@
         var m = new m3.Marker3DElement({ position: { lat: cur.lat, lng: cur.lng, altitude: 0 }, altitudeMode: 'CLAMP_TO_GROUND', sizePreserved: true });
         var t = d.createElement('template');
         t.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="36" height="46" viewBox="0 0 36 46"><path d="M18 44C11 34 3 27 3 18a15 15 0 0 1 30 0c0 9-8 16-15 26Z" fill="' +
-          (right ? '#9fe870' : '#f4694f') + '" stroke="#071224" stroke-width="3"/><circle cx="18" cy="18" r="5.5" fill="#071224"/></svg>';
+          (right ? '#35d07f' : '#ff5e4d') + '" stroke="#141311" stroke-width="3"/><circle cx="18" cy="18" r="5.5" fill="#141311"/></svg>';
         m.append(t);
         map.append(m);
         pins[place.key] = m;
