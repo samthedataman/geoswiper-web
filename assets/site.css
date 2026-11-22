@@ -147,39 +147,59 @@ h1 em{font-style:italic;color:var(--pine)}
 
 /* ───────── Header (every page) ─────────
    One bar: the app icon and the wordmark on the left; the links, the theme switch and the App Store
-   button on the right. On the home page it is the stage's first row (see the stage). The App Store
-   button reads "Coming soon" until APP_STORE_URL is set in assets/site.js. */
-.site-header{--hdr:64px;position:sticky;top:0;z-index:50;background:rgba(var(--paper-rgb),.92);-webkit-backdrop-filter:saturate(1.4) blur(12px);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line)}
-.bar{display:flex;align-items:center;gap:10px;height:var(--hdr)}
-.brand{flex:none;display:inline-flex;align-items:center;gap:11px;font:750 1.375rem/1 var(--sans);letter-spacing:-.028em;text-decoration:none;color:inherit}
+   button on the right. It is paper on every page but the home page, where it is the stage's first
+   row and wears the stage's night (see the stage). Its colours are the --hdr-* and --cta-* tokens,
+   so one set of rules draws both. The App Store button is a small version of the plaques in the app
+   section; it reads "Coming soon" until APP_STORE_URL is set in assets/site.js. */
+.site-header{--hdr:64px;--hdr-bg:rgba(var(--paper-rgb),.86);--hdr-fg:var(--ink);--hdr-fg-2:var(--ink-2);--hdr-hair:var(--line);--hdr-rule:var(--line-2);--hdr-hover:rgba(var(--ink-rgb),.06);--hdr-accent:var(--pine);--hdr-icon-ring:0 0 0 1px rgba(11,27,51,.08),0 1px 3px rgba(11,27,51,.28);--cta-bg:var(--ink);--cta-fg:var(--paper);position:sticky;top:0;z-index:50;background:var(--hdr-bg);color:var(--hdr-fg);-webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px);border-bottom:1px solid var(--hdr-hair)}
+.bar{display:flex;align-items:center;gap:4px;height:var(--hdr)}
+.brand{flex:none;display:inline-flex;align-items:center;gap:11px;font:700 1.3125rem/1 var(--sans);letter-spacing:-.032em;text-decoration:none;color:inherit}
+.site-header .brand{margin-right:auto}
 .brand picture,.brand img{flex:none}
-.brand img{width:36px;height:36px;border-radius:22%;box-shadow:0 0 0 1px rgba(11,27,51,.08),0 1px 3px rgba(11,27,51,.28)}
-.nav-links{display:flex;align-items:center;gap:2px;margin-left:auto;margin-right:6px}
-.nav-links a{display:inline-flex;align-items:center;height:44px;padding:0 14px;border-radius:var(--r-sm);font:600 .9375rem/1 var(--sans);color:var(--ink-2);text-decoration:none;transition:color .2s,background .2s}
-.nav-links a:hover{color:var(--ink);background:rgba(var(--ink-rgb),.06)}
-.site-header .iconbtn{width:44px;height:44px;border-color:transparent;background:transparent}
-.site-header .iconbtn:hover{box-shadow:none;background:rgba(var(--ink-rgb),.06)}
-.site-header .iconbtn .i{width:19px;height:19px}
-/* the App Store button: the Apple mark (the only brand glyphs on the site are this and Google Play's) */
+.brand img{width:34px;height:34px;border-radius:23%;box-shadow:var(--hdr-icon-ring,0 0 0 1px rgba(11,27,51,.08),0 1px 3px rgba(11,27,51,.28));transition:transform .45s var(--ease-out)}
+.brand:hover img{transform:rotate(-8deg) scale(1.06)}
+/* the links: quiet until you point at one, then the accent draws in under it */
+.nav-links{display:flex;align-items:center;gap:2px;margin-right:2px}
+.nav-links a{position:relative;display:inline-flex;align-items:center;height:44px;padding:0 13px;font:600 .9375rem/1 var(--sans);letter-spacing:-.006em;color:var(--hdr-fg-2);text-decoration:none;transition:color .2s}
+.nav-links a::after{content:"";position:absolute;left:13px;right:13px;bottom:10px;height:2px;border-radius:2px;background:var(--hdr-accent);transform:scaleX(0);transform-origin:0 50%;transition:transform .35s var(--ease-out)}
+.nav-links a:hover,.nav-links a:focus-visible{color:var(--hdr-fg)}
+.nav-links a:hover::after,.nav-links a:focus-visible::after{transform:scaleX(1)}
+/* the theme switch: a round ghost button (44px to the finger), then a hairline before the App Store button */
+.site-header .iconbtn{position:relative;width:40px;height:40px;border-radius:50%;border-color:transparent;background:transparent;color:var(--hdr-fg-2);transition:color .2s,background .2s}
+.site-header .iconbtn::before{content:"";position:absolute;inset:-2px}
+.site-header .iconbtn:hover{color:var(--hdr-fg);box-shadow:none;background:var(--hdr-hover)}
+.site-header .iconbtn .i{width:18px;height:18px}
+.site-header .theme-toggle{margin-right:15px}
+.site-header .theme-toggle::after{content:"";position:absolute;right:-9px;top:50%;width:1px;height:22px;translate:0 -50%;background:var(--hdr-rule);pointer-events:none}
+/* the App Store button: the Apple mark (the only brand glyphs on the site are this and Google Play's),
+   a mono label over the store's name, like the plaques */
 .mark{flex:none;fill:currentColor}
-.store{flex:none;display:inline-flex;align-items:center;gap:9px;height:44px;padding:0 16px 0 13px;border-radius:var(--r-sm);background:var(--ink);color:var(--paper);text-decoration:none;transition:box-shadow .2s}
-.store:hover{box-shadow:0 0 0 2px var(--ink)}
-.store .mark{width:21px;height:21px;margin-top:-3px}
+.store{position:relative;flex:none;display:inline-flex;align-items:center;gap:9px;height:42px;padding:0 15px 0 12px;border-radius:11px;background:var(--cta-bg);color:var(--cta-fg);text-decoration:none;transition:box-shadow .2s,transform .2s var(--ease-out)}
+.store::before{content:"";position:absolute;inset:-3px 0}
+.store:hover{box-shadow:0 0 0 2px var(--cta-bg)}
+.store:active{transform:scale(.97)}
+.store .mark{width:19px;height:19px;margin-top:-2px}
 .store-t{display:flex;flex-direction:column;gap:3px;white-space:nowrap}
-.store small{font:600 .6875rem/1 var(--sans);letter-spacing:.01em;opacity:.82}
-.store b{font:650 1.0625rem/1 var(--sans);letter-spacing:-.015em}
+.store small{font:500 .59375rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;opacity:.74}
+.store b{font:650 .96875rem/1 var(--sans);letter-spacing:-.014em}
 @media (max-width:899px){
   .site-header{--hdr:56px}
 }
 @media (max-width:520px){
   .nav-links{display:none}
-  .bar .theme-toggle{margin-left:auto}
-  .brand{gap:10px;font-size:1.25rem}
-  .brand img{width:32px;height:32px}
-  .store{gap:7px;padding:0 12px 0 10px}
-  .store .mark{width:18px;height:18px}
-  .store small{font-size:.5938rem}
-  .store b{font-size:.9375rem}
+  .brand{gap:9px;font-size:1.1875rem}
+  .brand img{width:30px;height:30px}
+  .site-header .theme-toggle{margin-right:11px}
+  .site-header .theme-toggle::after{right:-7px;height:20px}
+  .store{gap:7px;height:40px;padding:0 12px 0 10px;border-radius:10px}
+  .store .mark{width:17px;height:17px}
+  .store small{font-size:.5625rem;letter-spacing:.06em}
+  .store b{font-size:.90625rem}
+}
+/* once the app is live the top line reads "Download on the": too long beside the wordmark on the
+   narrowest phones, where the mark and "App Store" say it alone */
+@media (max-width:349px){
+  .store[data-live] small{display:none}
 }
 
 /* ───────── The stage ─────────
@@ -192,8 +212,10 @@ h1 em{font-style:italic;color:var(--pine)}
 .skip--stage{left:50%;translate:-50% 0;background:var(--on-navy);color:#191813}
 .skip--stage:focus{top:12px}
 
-/* the header, as the stage's first row: opaque paper, never over the picture */
-.stage > .site-header{--hdr:inherit;position:relative;top:auto;z-index:7;grid-column:1/-1;background:var(--paper);-webkit-backdrop-filter:none;backdrop-filter:none}
+/* the header, as the stage's first row: opaque night like the stage itself, so the first screen is
+   one piece (night above, paper dock below). It is its own row and never sits over the picture. */
+.stage > .site-header{--hdr:inherit;--hdr-bg:var(--night);--hdr-fg:var(--on-navy);--hdr-fg-2:var(--on-navy-2);--hdr-hair:rgba(255,255,255,.1);--hdr-rule:rgba(255,255,255,.22);--hdr-hover:rgba(255,255,255,.09);--hdr-accent:var(--lime);--hdr-icon-ring:0 0 0 1px rgba(255,255,255,.16);--cta-bg:var(--on-navy);--cta-fg:#191813;position:relative;top:auto;z-index:7;grid-column:1/-1;-webkit-backdrop-filter:none;backdrop-filter:none}
+.stage > .site-header :focus-visible{outline-color:var(--lime)}
 .stage > .site-header .bar{height:var(--top);padding:env(safe-area-inset-top) max(var(--gutter),env(safe-area-inset-right)) 0 max(var(--gutter),env(safe-area-inset-left))}
 
 /* the chips along the window's top edge: the slate and the coach line left, "Skip the fall" and the

@@ -12,8 +12,9 @@ var APP_STORE_URL = '';
   var d = document, root = d.documentElement;
   var wantsDark = window.matchMedia('(prefers-color-scheme: dark)');
   var switches = d.querySelectorAll('[data-theme-toggle]');
-  /* the browser-bar tint follows the theme (every page's top is the paper header) */
-  var tints = d.querySelectorAll('meta[name="theme-color"]');
+  /* the browser-bar tint follows the theme where the page's top is the paper header; the home page's
+     top is the night header in both themes, so its tint is marked data-fixed and left alone */
+  var tints = d.querySelectorAll('meta[name="theme-color"]:not([data-fixed])');
   function each(list, fn) { [].forEach.call(list, fn); }
   function theme() {
     return root.getAttribute('data-theme') || (wantsDark.matches ? 'dark' : 'light');
@@ -63,6 +64,7 @@ var APP_STORE_URL = '';
       el.appendChild(a);
     }
     a.href = store;
+    a.setAttribute('data-live', ''); /* lets the narrowest phones drop the top line (see .store in site.css) */
     line = a.querySelector('[data-store-line]');
     if (line) line.textContent = 'Download on the';
   });
