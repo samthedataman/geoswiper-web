@@ -37,7 +37,7 @@
   var calm = w.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var tall = w.matchMedia('(max-aspect-ratio: 1/1)');
   var compact = w.matchMedia('(max-width: 899px), (max-height: 520px) and (orientation: landscape)');
-  var RED = '██████, ██████', RED_AT = '██°██′N ██°██′E';
+  var RED = '██████, ██████';
 
   /* ── Places ──────────────────────────────────────────────────────────────
      Live: the coordinates of a street we chose, its ground height (metres above sea level)
@@ -172,14 +172,10 @@
   function slateNow() {
     var short = compact.matches, p = P();
     if (layer === 'photo') return revealed ? (short ? p.name : p.where).toUpperCase() : RED + ' · 360° PHOTO';
-    if (revealed) return p.name.toUpperCase() + (short || !spot ? '' : ' · ' + dm(spot.lat, 'N', 'S') + ' ' + dm(spot.lng, 'E', 'W'));
-    return RED + (short ? '' : ' · ' + RED_AT) + ' · ' + altText;
+    if (revealed) return p.name.toUpperCase();
+    return RED + ' · ' + altText;
   }
   function slate() { slateJob++; paintSlate(slateNow()); }
-  function dm(v, pos, neg) {
-    var a = Math.abs(v), deg = Math.floor(a), min = Math.floor((a - deg) * 60);
-    return deg + '°' + (min < 10 ? '0' : '') + min + '′' + (v < 0 ? neg : pos);
-  }
   function unredact() {
     var from = slateText.textContent, to, n, i = 0, mine;
     revealed = true;
