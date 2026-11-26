@@ -168,7 +168,7 @@ h1 em{font-style:normal;padding:0 .16em .04em;margin:0 -.04em;border-radius:.18e
    button on the right. It is paper on every page but the home page, where it is the stage's first
    row and wears the stage's night (see the stage). Its colours are the --hdr-* and --cta-* tokens,
    so one set of rules draws both. The App Store button is a small version of the plaques in the app
-   section; it reads "Coming soon" until APP_STORE_URL is set in assets/site.js. */
+   section; it links to APP_STORE_URL in assets/site.js. */
 .site-header{--hdr:64px;--hdr-bg:rgba(var(--paper-rgb),.86);--hdr-fg:var(--ink);--hdr-fg-2:var(--ink-2);--hdr-hair:var(--line);--hdr-rule:var(--line-2);--hdr-hover:rgba(var(--ink-rgb),.06);--hdr-accent:var(--sun);--hdr-icon-ring:0 0 0 1px rgba(27,25,22,.08),0 1px 3px rgba(27,25,22,.28);--cta-bg:var(--ink);--cta-fg:var(--paper);position:sticky;top:0;z-index:50;background:var(--hdr-bg);color:var(--hdr-fg);-webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px);border-bottom:1px solid var(--hdr-hair)}
 .bar{display:flex;align-items:center;gap:4px;height:var(--hdr)}
 .brand{flex:none;display:inline-flex;align-items:center;gap:11px;font:800 1.375rem/1 var(--display);letter-spacing:-.02em;text-decoration:none;color:inherit}

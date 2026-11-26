@@ -3,7 +3,7 @@
    The App Store link. While this is empty every App Store button and plaque reads "Coming soon"
    and goes to the app section of the home page. Set it to the app's App Store address once the
    app is live, and they all read "Download on the App Store" and go there. */
-var APP_STORE_URL = '';
+var APP_STORE_URL = 'https://apps.apple.com/us/app/geoswiper/id6787602895';
 
 /* The theme switch. The theme follows the device until the visitor picks one. Picking the
    device's own setting again hands control back to the device. */
